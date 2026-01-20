@@ -1,6 +1,7 @@
 import { client } from "@/sanity/lib/client";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import { verifyPassword } from "@/utils/verify-password";
 
 export async function POST(req: Request) {
   const { clientId, passcode } = await req.json();
@@ -17,7 +18,7 @@ export async function POST(req: Request) {
     );
   }
 
-  const isValidUser = await bcrypt.compare(passcode, clientLogin.passcodeHash);
+  const isValidUser = await verifyPassword(passcode, clientLogin.passcodeHash);
 
   if (!isValidUser) {
     return NextResponse.json(
@@ -35,5 +36,3 @@ export async function POST(req: Request) {
   });
   return res;
 }
-
-// http://localhost:3333/studio/structure/client;026b5b43-e749-465b-915a-b399aa56e886
