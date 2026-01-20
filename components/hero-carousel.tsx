@@ -1,0 +1,288 @@
+"use client";
+
+import { useState, useEffect, useCallback, useRef } from "react";
+import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import Image from "next/image";
+import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import { Controller, EffectFade, Navigation, Pagination } from "swiper/modules";
+
+import "swiper/css/navigation";
+import "swiper/css/effect-fade";
+import "swiper/css/pagination";
+import { useQuery } from "@tanstack/react-query";
+import { client } from "@/sanity/lib/client";
+import { firstHeroVideoUrl } from "@/constants/info";
+
+export interface TestimonialType {
+  id: number;
+  name: string;
+  role?: string;
+  quote: string;
+  project: string;
+  videoUrl: string;
+  countryCode: string;
+}
+
+export function HeroCarousel() {
+  const [controlledSwiper, setControlledSwiper] = useState<any>(null);
+  const swiperRef = useRef<SwiperRef>(null);
+  const videosRef = useRef<HTMLVideoElement[]>([]);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["hero-testimonials"],
+    queryFn: async function () {
+      try {
+        const data = await client.fetch(
+          `*[_type == "testimonial"]{...,"video":video.asset->}`,
+        );
+        return data;
+      } catch (error) {
+        console.log("An Error Occured while fetching hero testimonials");
+        return Promise.reject(new Error("Hero Testimonial Error"));
+      }
+    },
+    retry: false,
+  });
+  useEffect(() => {
+    if (videosRef.current[0]) {
+      videosRef.current[0].play();
+    }
+  }, []);
+
+  return (
+    <section className="relative  h-screen w-full overflow-hidden">
+      <div className="relative">
+        <div className="flex items-center gap-2 absolute bottom-5 lg:bottom-10 right-10 z-3">
+          <button className="p-3 hero-carousel-prev rounded-full border border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 transition-colors">
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <button
+            onClick={() => {
+              if (swiperRef.current?.swiper.activeIndex === data.length) {
+                swiperRef.current?.swiper.slideTo(0);
+              }
+            }}
+            className="p-3 hero-carousel-next rounded-full border border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 transition-colors"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+        </div>
+        <Swiper
+          ref={swiperRef}
+          onSlideChange={(swiper) => {
+            // Pause and reset all videos
+            videosRef.current.forEach((videoRef, i) => {
+              if (videoRef && i !== swiper.activeIndex) {
+                videoRef.pause();
+                videoRef.currentTime = 0;
+              }
+            });
+
+            // Play the current active slide's video
+            const currentVideo = videosRef.current[swiper.activeIndex];
+            if (currentVideo) {
+              currentVideo.play();
+            }
+          }}
+          className="h-screen! relative [&_.swiper-pagination-bullet]:bg-slate-300!"
+          modules={[Navigation, EffectFade, Controller, Pagination]}
+          pagination={{ enabled: true }}
+          controller={{ control: controlledSwiper }}
+          effect="fade"
+          navigation={{
+            enabled: true,
+            nextEl: ".hero-carousel-next",
+            prevEl: ".hero-carousel-prev",
+          }}
+        >
+          <SwiperSlide
+            style={{ height: "100dvh" }}
+            className=" h-screen relative"
+          >
+            <div
+              className={cn(
+                "absolute inset-0 transition-opacity duration-1000 h-full! w-full",
+              )}
+            >
+              <video
+                onCanPlay={() => {
+                  if (0 === swiperRef.current?.swiper.activeIndex) {
+                    videosRef.current[0].play();
+                  }
+                }}
+                onEnded={() => {
+                  if (swiperRef.current?.swiper.isEnd) {
+                    swiperRef.current.swiper.slideTo(0);
+                  } else {
+                    swiperRef.current?.swiper.slideNext();
+                  }
+                }}
+                ref={(el) => {
+                  videosRef.current[0] = el!;
+                }}
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-screen! object-cover"
+                src={firstHeroVideoUrl}
+              />
+              <div className="absolute h-screen w-full bg-linear-to-r from-primary/50 via-primary/40 to-primary/50" />
+            </div>
+
+            <div className="absolute bottom-20 lg:bottom-10 left-4 right-4 lg:left-10 z-2 ">
+              <div className="h-auto! items-end flex!">
+                <div className="lg:max-w-3xl self-end">
+                  {/* Project Tag */}
+                  <div className="inline-flex items-center gap-2 bg-accent/20 text-accent px-4 py-2 rounded-full text-sm font-medium mb-6 backdrop-blur-sm">
+                    <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+                    We Build
+                  </div>
+
+                  {/* Quote */}
+                  <div className="relative mb-8">
+                    <Quote className="absolute -top-4 left-4 h-12 w-12 text-accent/30" />
+                    <p className="text-4xl sm:text-6xl md:text-7xl  font-bold text-primary-foreground leading-tight lg:pl-8">
+                      Build Your Dream Property in Nigeria—From Anywhere in the
+                      World
+                    </p>
+                  </div>
+
+                  {/* Author */}
+                  <div className="flex items-center gap-4 lg:pl-8 mb-12">
+                    <div className="w-12 h-12 overflow-hidden relative bgaccent flex items-center justify-center text-accent-foreground font-bold text-lg">
+                      <Image
+                        src={`https://flagcdn.com/ng.svg`}
+                        height={"1000"}
+                        width={"1000"}
+                        // alt={testimonial.countryCode}
+                        alt=""
+                        className="rounded-xs"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-primary-foreground font-semibold text-lg">
+                        OneredBox
+                      </p>
+                      {/* <p className="text-primary-foreground/70 text-sm">
+                        testimonial.role
+                      </p> */}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </SwiperSlide>
+          {data &&
+            data.map((testimonial: any, index: any) => (
+              <SwiperSlide
+                style={{ height: "100%" }}
+                className=" h-screen relative"
+              >
+                <div
+                  key={testimonial.id}
+                  className={cn(
+                    "absolute inset-0 transition-opacity duration-1000 h-full w-full",
+                  )}
+                >
+                  <video
+                    onCanPlay={() => {
+                      if (index + 1 === swiperRef.current?.swiper.activeIndex) {
+                        videosRef.current[index + 1].play();
+                      }
+                    }}
+                    onEnded={() => {
+                      if (swiperRef.current?.swiper.isEnd) {
+                        swiperRef.current.swiper.slideTo(0);
+                      } else {
+                        swiperRef.current?.swiper.slideNext();
+                      }
+                    }}
+                    ref={(el) => {
+                      videosRef.current[index + 1] = el!;
+                    }}
+                    // autoPlay
+                    muted
+                    // loop
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover"
+                    src={testimonial.video.url}
+                  />
+                  {/* Dark overlay */}
+                  <div className="absolute inset-0 bg-linear-to-r from-primary/50 via-primary/40 to-primary/50" />
+                </div>
+
+                {/*  */}
+                <div className="absolute bottom-20 lg:bottom-10 left-4 right-4 lg:left-10 z-2 ">
+                  <div key={index} className="h-auto! items-end flex!">
+                    <div className="lg:max-w-3xl self-end">
+                      {/* Project Tag */}
+                      <div className="inline-flex items-center gap-2 bg-accent/20 text-accent px-4 py-2 rounded-full text-sm font-medium mb-6 backdrop-blur-sm">
+                        <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+                        {testimonial.project}
+                      </div>
+
+                      {/* Quote */}
+                      <div className="relative mb-8">
+                        <Quote className="absolute -top-4 left-4 h-12 w-12 text-accent/30" />
+                        <p className="text2xl md:text-2xl text-white sm:leading-[150%] lg:pl-8">
+                          {testimonial.quote}
+                        </p>
+                      </div>
+
+                      {/* Author */}
+                      <div className="flex items-center gap-4 lg:pl-8 mb-12">
+                        <div className="w-12 h-12 overflow-hidden relative bgaccent flex items-center justify-center text-accent-foreground font-bold text-lg">
+                          {/* {currentTestimonial.name.charAt(0)} */}
+                          <Image
+                            src={`https://flagcdn.com/${testimonial.countryCode.toLowerCase()}.svg`}
+                            height={"1000"}
+                            width={"1000"}
+                            alt={testimonial.countryCode}
+                            className="rounded-xs"
+                          />
+                        </div>
+                        <div>
+                          <p className="text-primary-foreground font-semibold text-lg">
+                            {testimonial.name}
+                          </p>
+                          <p className="text-primary-foreground/70 text-sm">
+                            {testimonial.role}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+        </Swiper>
+
+        <div className="absolute left-4 bottom-5 sm:bottom-5 sm:left-5 z-10">
+          <div className="flex gap-3 flex-col">
+            <Link href={"/book-service"}>
+              <Button
+                size="lg"
+                className="bg-accent text-white font-semibold hover:bg-accent/90"
+              >
+                Start Your Project
+              </Button>
+            </Link>
+            <Link
+              href={"/dashboard/projects/8c4e7ca8-fcee-4395-bcbe-e9cad8c054f0"}
+            >
+              <Button
+                size="lg"
+                variant="outline"
+                className="text-white  hover:text-white hover:bg-accent/30 bg-white/5 border-accent font-semibold cursor-pointer"
+              >
+                View Demo Dashboard
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

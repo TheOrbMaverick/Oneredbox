@@ -1,0 +1,28 @@
+Website things.
+
+How are we storing the things on the site?
+
+The dashboard button at the top right should by the “My Dashboard” or “My Projects” button. Then you should move the present dashboard button to beside start your project. It should say “view demo dashboard”
+
+We are supposed to sign up users up and then they’ll get their own dashboard.
+
+The logo and writing in the top left are not the same as the logo and writing in Oneredbox.ng. Please change them.
+
+“Start your project” and “view our work” buttons don’t go anywhere. Did you create a page for “our work”? You can use random images and I can replace them with our project images later and also make it easy for me to add projects to it.
+
+Also you did not add the flags beside the names of the people that are giving the testimonials the flags of the countries need to be there since we are trying to show that we have done work for people around the globe.
+
+
+The book service page has this sentence I really like “build your dream home in Nigeria -From anywhere in the world” and I don’t know if there’s a way we can put that sentence in the home page maybe above the testimonials? Cos it should be like the tagline for the site.
+
+
+The book service buttons at the bottom of the service should also be changed to “Book a Free Consultation”. So it should have like a calendar and time attached. I haven’t tried to submit the forms yet so I don’t know what’s at the end but I think we should leave the charge till after we discuss with the people.
+
+So all this information the site should be changed:
+this is the US business number: +19177645504
+
+And this is the WhatsApp number: +2347016639821
+
+Then use this address for now: 24 I.T. Igbani Street, Jabi.
+
+Also instead of hardcoding the repeated information just put them in a string variable in a separate file that should contain all hardcoded things so that all the hardcoded information is in one place and then I can easily change it in that one place and have it change everywhere. Cos I might have to change things like the address.
