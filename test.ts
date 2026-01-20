@@ -60,8 +60,8 @@ export async function hashPassword(plainPassword: string): Promise<string> {
  * @returns Promise resolving to true if passwords match, false otherwise
  */
 export async function verifyPassword(
-  plainPassword: string,
-  hashedPassword: string,
+  plainPassword: string = "karsanaproject1",
+  hashedPassword: string = "$2b$12$oL4DduiCdd5dH0FXv8LqqOl56nykpRrAoIArkwRPpT1lUVJC5NPt2",
 ): Promise<boolean> {
   // Input validation
   if (!plainPassword || typeof plainPassword !== "string") {
@@ -98,40 +98,40 @@ export async function needsRehash(hashedPassword: string): Promise<boolean> {
   }
 }
 
-// (async () => {
-//   try {
-//     const pass = await hashPassword("HelloWorld!");
-//     console.log("The password hash is", pass);
-//   } catch (error) {
-//     console.log("Error occured while creating hash", error);
-//   }
-// })();
-
-async function runCLI() {
-  const args = process.argv.slice(2);
-
-  // Supports: -p password OR --password password
-  const passwordIndex =
-    args.indexOf("-p") !== -1 ? args.indexOf("-p") : args.indexOf("--password");
-
-  if (passwordIndex === -1 || !args[passwordIndex + 1]) {
-    console.error("Usage: ts-node file.ts -p <password>");
-    process.exit(1);
-  }
-
-  const plainPassword = args[passwordIndex + 1];
-
+(async () => {
   try {
-    const hash = await hashPassword(plainPassword);
-    console.log("Hashed password:");
-    console.log(hash);
-  } catch (err) {
-    console.error(
-      "Error:",
-      err instanceof Error ? err.message : "Unknown error",
-    );
-    process.exit(1);
+    const pass = await verifyPassword();
+    console.log("The password hash is", pass);
+  } catch (error) {
+    console.log("Error occured while creating hash", error);
   }
-}
+})();
 
-runCLI();
+// async function runCLI() {
+//   const args = process.argv.slice(2);
+
+//   // Supports: -p password OR --password password
+//   const passwordIndex =
+//     args.indexOf("-p") !== -1 ? args.indexOf("-p") : args.indexOf("--password");
+
+//   if (passwordIndex === -1 || !args[passwordIndex + 1]) {
+//     console.error("Usage: ts-node file.ts -p <password>");
+//     process.exit(1);
+//   }
+
+//   const plainPassword = args[passwordIndex + 1];
+
+//   try {
+//     const hash = await hashPassword(plainPassword);
+//     console.log("Hashed password:");
+//     console.log(hash);
+//   } catch (err) {
+//     console.error(
+//       "Error:",
+//       err instanceof Error ? err.message : "Unknown error",
+//     );
+//     process.exit(1);
+//   }
+// }
+
+// runCLI();

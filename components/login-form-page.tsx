@@ -64,7 +64,7 @@ export default function LoginForm() {
         { headers: { "Content-Type": "application/json" } },
       );
       if (resData.success) {
-        router.push(nextPathname);
+        router.push("/dashboard");
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {

@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   const { clientId, passcode } = await req.json();
 
   const clientLogin = await client.fetch(
-    `*[_type == "client" && _id == "${clientId}"][0]`,
+    `*[_type == "client" && clientId == "${clientId}"][0]`,
     { clientId },
   );
 
