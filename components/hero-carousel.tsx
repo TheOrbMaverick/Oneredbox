@@ -260,7 +260,7 @@ export function HeroCarousel() {
         </Swiper>
 
         <div className="absolute left-4 bottom-5 sm:bottom-5 sm:left-5 z-10">
-          <div className="flex gap-3 flex-col">
+          <div className="flex gap-3 flex-col sm:flex-row">
             <Link href={"/book-service"}>
               <Button
                 size="lg"
