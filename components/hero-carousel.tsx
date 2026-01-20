@@ -91,7 +91,7 @@ export function HeroCarousel() {
           modules={[Navigation, EffectFade, Controller, Pagination]}
           pagination={{ enabled: true }}
           controller={{ control: controlledSwiper }}
-          effect="fade"
+          // effect="fade"
           navigation={{
             enabled: true,
             nextEl: ".hero-carousel-next",
@@ -131,7 +131,7 @@ export function HeroCarousel() {
               <div className="absolute h-screen w-full bg-linear-to-r from-primary/50 via-primary/40 to-primary/50" />
             </div>
 
-            <div className="absolute bottom-20 lg:bottom-10 left-4 right-4 lg:left-10 z-2 ">
+            <div className="absolute bottom-20_ lg:bottom-10_ top-1/2 -translate-y-1/2 left-4 right-4 lg:left-10 z-2 ">
               <div className="h-auto! items-end flex!">
                 <div className="lg:max-w-3xl self-end">
                   {/* Project Tag */}
@@ -143,7 +143,7 @@ export function HeroCarousel() {
                   {/* Quote */}
                   <div className="relative mb-8">
                     <Quote className="absolute -top-4 left-4 h-12 w-12 text-accent/30" />
-                    <p className="text-4xl sm:text-6xl md:text-7xl  font-bold text-primary-foreground leading-tight lg:pl-8">
+                    <p className="text-4xl sm:text-6xl   font-bold text-primary-foreground leading-tight lg:pl-8">
                       Build Your Dream Property in Nigeria—From Anywhere in the
                       World
                     </p>
@@ -214,7 +214,7 @@ export function HeroCarousel() {
                 </div>
 
                 {/*  */}
-                <div className="absolute bottom-20 lg:bottom-10 left-4 right-4 lg:left-10 z-2 ">
+                <div className="absolute bottom-20_ lg:bottom-10_ top-1/2 -translate-y-1/2 left-4 right-4 lg:left-10 z-2 ">
                   <div key={index} className="h-auto! items-end flex!">
                     <div className="lg:max-w-3xl self-end">
                       {/* Project Tag */}
@@ -259,7 +259,7 @@ export function HeroCarousel() {
             ))}
         </Swiper>
 
-        <div className="absolute left-4 bottom-5 sm:bottom-5 sm:left-5 z-10">
+        <div className="absolute left-4 bottom-5 sm:bottom-24 sm:left-18 z-10">
           <div className="flex gap-3 flex-col sm:flex-row">
             <Link href={"/book-service"}>
               <Button
