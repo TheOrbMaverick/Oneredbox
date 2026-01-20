@@ -98,58 +98,40 @@ export async function needsRehash(hashedPassword: string): Promise<boolean> {
   }
 }
 
-// Demo/Test function
-(async function main() {
-  console.log("🔐 Password Hashing Security Demo\n");
-  console.log(`Configuration:`);
-  console.log(`- Salt Rounds: ${SALT_ROUNDS}`);
-  console.log(`- Min Password Length: ${MIN_PASSWORD_LENGTH}`);
-  console.log(`- Max Password Length: ${MAX_PASSWORD_LENGTH}\n`);
+// (async () => {
+//   try {
+//     const pass = await hashPassword("HelloWorld!");
+//     console.log("The password hash is", pass);
+//   } catch (error) {
+//     console.log("Error occured while creating hash", error);
+//   }
+// })();
 
-  const testPassword = "SecureP@ssw0rd123!";
+async function runCLI() {
+  const args = process.argv.slice(2);
+
+  // Supports: -p password OR --password password
+  const passwordIndex =
+    args.indexOf("-p") !== -1 ? args.indexOf("-p") : args.indexOf("--password");
+
+  if (passwordIndex === -1 || !args[passwordIndex + 1]) {
+    console.error("Usage: ts-node file.ts -p <password>");
+    process.exit(1);
+  }
+
+  const plainPassword = args[passwordIndex + 1];
 
   try {
-    // Hash the password
-    console.log(`Original Password: "${testPassword}"`);
-    const startHash = Date.now();
-    const hashedPassword = await hashPassword(testPassword);
-    const hashTime = Date.now() - startHash;
-    console.log(`Hashed Password: ${hashedPassword}`);
-    console.log(`Hash Time: ${hashTime}ms\n`);
-
-    // Verify correct password
-    const startVerifyCorrect = Date.now();
-    const isCorrect = await verifyPassword(testPassword, hashedPassword);
-    const verifyCorrectTime = Date.now() - startVerifyCorrect;
-    console.log(`✓ Correct Password Verification: ${isCorrect}`);
-    console.log(`  Verification Time: ${verifyCorrectTime}ms\n`);
-
-    // Verify incorrect password
-    const wrongPassword = "WrongPassword123!";
-    const startVerifyWrong = Date.now();
-    const isWrong = await verifyPassword(wrongPassword, hashedPassword);
-    const verifyWrongTime = Date.now() - startVerifyWrong;
-    console.log(`✗ Wrong Password Verification: ${isWrong}`);
-    console.log(`  Verification Time: ${verifyWrongTime}ms\n`);
-
-    // Check if rehash is needed
-    const rehashNeeded = await needsRehash(hashedPassword);
-    console.log(`Rehash Needed: ${rehashNeeded}\n`);
-
-    // Test with weak password (should fail)
-    try {
-      await hashPassword("weak");
-    } catch (error) {
-      console.log(
-        `✓ Weak password rejected: ${error instanceof Error ? error.message : "Unknown error"}`,
-      );
-    }
-
-    console.log("\n✅ All security checks passed!");
-  } catch (error) {
+    const hash = await hashPassword(plainPassword);
+    console.log("Hashed password:");
+    console.log(hash);
+  } catch (err) {
     console.error(
-      "❌ Error:",
-      error instanceof Error ? error.message : "Unknown error",
+      "Error:",
+      err instanceof Error ? err.message : "Unknown error",
     );
+    process.exit(1);
   }
-})();
+}
+
+runCLI();
