@@ -98,7 +98,7 @@ export default function DashboardContent({ clientId }: DashboardContentProps) {
         <section className="pt-24 pb-8 lg:pt-28 lg:pb-10 bg-zinc-900 text-white">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-              <div>
+              <div className="border-2 border-white">
                 <p className="text-zinc-400 mb-1">Welcome back,</p>
                 <div className="h-10 w-48 bg-zinc-800 animate-pulse rounded" />
               </div>
@@ -458,7 +458,7 @@ export default function DashboardContent({ clientId }: DashboardContentProps) {
                   </p>
                   <Button
                     asChild
-                    className="w-full bg-amber-500 hover:bg-red-700 text-white"
+                    className="w-full bg-amber-500 hover:bg-transparent border-2 border-transparent hover:border-amber-500 hovertext-amber-400 font-semibold tracking-wider text-white"
                   >
                     <Link href="/contact">
                       Get in Touch

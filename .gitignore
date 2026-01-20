@@ -28,3 +28,8 @@ next-env.d.ts
 
 # public/
 # /public/
+
+# Sanity Functions
+functions/**/.env*
+functions/**/.build/
+functions/**/node_modules/

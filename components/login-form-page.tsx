@@ -16,14 +16,11 @@ interface IFormInput {
 }
 
 export default function LoginForm() {
-  const { register, handleSubmit, setError, clearErrors } =
-    useForm<IFormInput>();
+  const { register, handleSubmit } = useForm<IFormInput>();
   const [invalidCredentialsError, setInvalidCredentialsError] =
     useState<boolean>(false);
   const router = useRouter();
   const [signingIn, setSigningIn] = useState<boolean>(false);
-
-  const nextPathname = "/dashboard";
 
   // Check if user is already authenticated (handles browser back button from cache)
   useEffect(() => {
