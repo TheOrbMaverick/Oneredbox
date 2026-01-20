@@ -19,6 +19,8 @@ import {
   HardHat,
   ChevronRight,
   MessageSquare,
+  AlertCircle,
+  RefreshCw,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -66,12 +68,58 @@ const statusConfig = {
 export default async function DashboardPage() {
   const cookieStore = await cookies();
   const clientId = cookieStore.get("dashboard_session")?.value;
-  const projectsRes = await client.fetch(
-    `*[_type=="client" && _id=="${clientId}"][0]{clientName,"projects":*[_type=="clientProject" && references(^._id)]}`,
-    {
-      clientId,
-    },
-  );
+
+  let projectsRes;
+  try {
+    projectsRes = await client.fetch(
+      `*[_type=="client" && _id=="${clientId}"][0]{clientName,"projects":*[_type=="clientProject" && references(^._id)]}`,
+      {
+        clientId,
+      },
+    );
+    if (!projectsRes) {
+      throw new Error("No data returned from Sanity");
+    }
+  } catch (error) {
+    console.error("Dashboard Data Fetch Error:", error);
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-zinc-950 p-4">
+        <Card className="max-w-md w-full border-red-200 dark:border-red-900 shadow-lg">
+          <CardHeader className="text-center pb-2">
+            <div className="mx-auto w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4">
+              <AlertCircle className="w-6 h-6 text-red-600 dark:text-red-500" />
+            </div>
+            <CardTitle className="text-xl text-red-700 dark:text-red-500">
+              Unable to Load Dashboard
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-center space-y-6">
+            <p className="text-muted-foreground">
+              An error occurred while loading your project data. Please verify
+              your internet connection and try again.
+            </p>
+            <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+              <Button asChild variant="outline" className="w-full sm:w-auto">
+                <Link href="/">
+                  <Home className="w-4 h-4 mr-2" />
+                  Back Home
+                </Link>
+              </Button>
+              <Button
+                asChild
+                className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white"
+              >
+                <a href="/dashboard">
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Refresh
+                </a>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
   const projects = projectsRes.projects;
 
   const activeProjects = projects.filter(
@@ -126,205 +174,250 @@ export default async function DashboardPage() {
           </div>
         </div>
       </section>
-
-      <div className="container mx-auto px-4 lg:px-8 py-8">
-        {/* Stats Overview */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <Card className="border-none shadow-sm">
-            <CardContent className="p-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">
-                    Total Projects
-                  </p>
-                  <p className="text-2xl font-bold mt-1">{projects.length}</p>
-                </div>
-                <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-center">
-                  <LayoutDashboard className="h-6 w-6 text-red-600" />
-                </div>
+      {projects.length !== 0 ? (
+        <div className="min-h-[70dvh] flex items-center justify-center bg-zinc-50 dark:bg-zinc-950 p-4">
+          <Card className="max-w-md w-full border-amber-200 border-none dark:border-amber-900 shadow-lg">
+            <CardHeader className="text-center pb-2">
+              <div className="mx-auto w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4">
+                <AlertCircle className="w-6 h-6 text-red-600 dark:text-red-500" />
               </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-none shadow-sm">
-            <CardContent className="p-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">
-                    Active Projects
-                  </p>
-                  <p className="text-2xl font-bold mt-1">
-                    {activeProjects.length}
-                  </p>
-                </div>
-                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
-                  <Clock className="h-6 w-6 text-blue-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-none shadow-sm">
-            <CardContent className="p-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">
-                    Total Invested
-                  </p>
-                  <p className="text-xl font-bold mt-1">
-                    {formatCurrency(totalInvested)}
-                  </p>
-                </div>
-                <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center">
-                  <Wallet className="h-6 w-6 text-green-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-none shadow-sm">
-            <CardContent className="p-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Outstanding</p>
-                  <p className="text-xl font-bold mt-1">
-                    {formatCurrency(totalOutstanding)}
-                  </p>
-                </div>
-                <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center">
-                  <TrendingUp className="h-6 w-6 text-amber-600" />
-                </div>
+              <CardTitle className="text-xl text-red-700 dark:text-red-500">
+                No Projects Found
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="text-center space-y-6">
+              <p className="text-muted-foreground">
+                No projects found. Please create a new project to see it here.
+              </p>
+              <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+                <Button
+                  asChild
+                  variant="outline"
+                  className="w-full sm:w-auto hover:text-white hover:bg-amber-500"
+                >
+                  <Link href="/">
+                    <Home className="w-4 h-4 mr-2" />
+                    Back Home
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  className="w-full sm:w-auto bg-amber-500 hover:bg-amber-400 text-white"
+                >
+                  <a href="/book-service">
+                    {/* <RefreshCw className="w-4 h-4 mr-2" /> */}
+                    Book Service
+                  </a>
+                </Button>
               </div>
             </CardContent>
           </Card>
         </div>
-
-        {/* Main Content Grid */}
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Projects List - Takes 2 columns */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Active Projects */}
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold">Active Projects</h2>
-                <Badge
-                  variant="secondary"
-                  className="bg-blue-100 text-blue-700 border-0"
-                >
-                  {activeProjects.length} active
-                </Badge>
-              </div>
-
-              {activeProjects.length > 0 ? (
-                <div className="space-y-4">
-                  {activeProjects.map((project: Record<string, any>) => (
-                    <ActiveProjectCard project={project} key={project._id} />
-                  ))}
-                </div>
-              ) : (
-                <Card className="border-dashed">
-                  <CardContent className="py-12 text-center">
-                    <Clock className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="font-medium mb-2">No active projects</h3>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Start a new project to see it here.
+      ) : (
+        <div className="container mx-auto px-4 lg:px-8 py-8">
+          {/* Stats Overview */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <Card className="border-none shadow-sm">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">
+                      Total Projects
                     </p>
-                    <Button asChild>
-                      <Link href="/book-service">
-                        <Plus className="mr-2 h-4 w-4" />
-                        Start New Project
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
+                    <p className="text-2xl font-bold mt-1">{projects.length}</p>
+                  </div>
+                  <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-center">
+                    <LayoutDashboard className="h-6 w-6 text-red-600" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-            {/* Completed Projects */}
-            {completedProjects.length > 0 && (
+            <Card className="border-none shadow-sm">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">
+                      Active Projects
+                    </p>
+                    <p className="text-2xl font-bold mt-1">
+                      {activeProjects.length}
+                    </p>
+                  </div>
+                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                    <Clock className="h-6 w-6 text-blue-600" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-none shadow-sm">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">
+                      Total Invested
+                    </p>
+                    <p className="text-xl font-bold mt-1">
+                      {formatCurrency(totalInvested)}
+                    </p>
+                  </div>
+                  <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center">
+                    <Wallet className="h-6 w-6 text-green-600" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-none shadow-sm">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Outstanding</p>
+                    <p className="text-xl font-bold mt-1">
+                      {formatCurrency(totalOutstanding)}
+                    </p>
+                  </div>
+                  <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center">
+                    <TrendingUp className="h-6 w-6 text-amber-600" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Main Content Grid */}
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Projects List - Takes 2 columns */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Active Projects */}
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-semibold">Completed Projects</h2>
+                  <h2 className="text-xl font-semibold">Active Projects</h2>
                   <Badge
                     variant="secondary"
-                    className="bg-green-100 text-green-700 border-0"
+                    className="bg-blue-100 text-blue-700 border-0"
                   >
-                    {completedProjects.length} completed
+                    {activeProjects.length} active
                   </Badge>
                 </div>
 
-                <div className="space-y-4">
-                  {completedProjects.map((project: Record<string, any>) => (
-                    <CompletedProjectCard project={project} key={project._id} />
-                  ))}
-                </div>
+                {activeProjects.length > 0 ? (
+                  <div className="space-y-4">
+                    {activeProjects.map((project: Record<string, any>) => (
+                      <ActiveProjectCard project={project} key={project._id} />
+                    ))}
+                  </div>
+                ) : (
+                  <Card className="border-dashed">
+                    <CardContent className="py-12 text-center">
+                      <Clock className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                      <h3 className="font-medium mb-2">No active projects</h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Start a new project to see it here.
+                      </p>
+                      <Button asChild>
+                        <Link href="/book-service">
+                          <Plus className="mr-2 h-4 w-4" />
+                          Start New Project
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
-            )}
-          </div>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Quick Actions */}
-            <Card className="border-none shadow-sm">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base">Quick Actions</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2 ">
-                <Button
-                  asChild
-                  variant="outline"
-                  className="w-full justify-start bg-transparent"
-                >
-                  <Link href="/book-service">
-                    <Plus className="mr-3 h-4 w-4 text-red-600" />
-                    Start New Project
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  variant="outline"
-                  className="w-full justify-start bg-transparent"
-                >
-                  <Link href="/for-sale">
-                    <Home className="mr-3 h-4 w-4 text-red-600" />
-                    Browse Properties
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  variant="outline"
-                  className="w-full justify-start bg-transparent"
-                >
-                  <Link href="/contact">
-                    <MessageSquare className="mr-3 h-4 w-4 text-red-600" />
-                    Contact Support
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
+              {/* Completed Projects */}
+              {completedProjects.length > 0 && (
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-xl font-semibold">
+                      Completed Projects
+                    </h2>
+                    <Badge
+                      variant="secondary"
+                      className="bg-green-100 text-green-700 border-0"
+                    >
+                      {completedProjects.length} completed
+                    </Badge>
+                  </div>
 
-            {/* Need Help */}
-            <Card className="border-none shadow-sm bg-zinc-900 text-white">
-              <CardContent className="p-5">
-                <h3 className="font-semibold mb-2">Need Assistance?</h3>
-                <p className="text-sm text-zinc-400 mb-4">
-                  Our team is available to help with any questions about your
-                  projects.
-                </p>
-                <Button
-                  asChild
-                  className="w-full bg-amber-500 hover:bg-red-700 text-white"
-                >
-                  <Link href="/contact">
-                    Get in Touch
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
+                  <div className="space-y-4">
+                    {completedProjects.map((project: Record<string, any>) => (
+                      <CompletedProjectCard
+                        project={project}
+                        key={project._id}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Sidebar */}
+            <div className="space-y-6">
+              {/* Quick Actions */}
+              <Card className="border-none shadow-sm">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base">Quick Actions</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2 ">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full justify-start bg-transparent"
+                  >
+                    <Link href="/book-service">
+                      <Plus className="mr-3 h-4 w-4 text-red-600" />
+                      Start New Project
+                    </Link>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full justify-start bg-transparent"
+                  >
+                    <Link href="/for-sale">
+                      <Home className="mr-3 h-4 w-4 text-red-600" />
+                      Browse Properties
+                    </Link>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full justify-start bg-transparent"
+                  >
+                    <Link href="/contact">
+                      <MessageSquare className="mr-3 h-4 w-4 text-red-600" />
+                      Contact Support
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Need Help */}
+              <Card className="border-none shadow-sm bg-zinc-900 text-white">
+                <CardContent className="p-5">
+                  <h3 className="font-semibold mb-2">Need Assistance?</h3>
+                  <p className="text-sm text-zinc-400 mb-4">
+                    Our team is available to help with any questions about your
+                    projects.
+                  </p>
+                  <Button
+                    asChild
+                    className="w-full bg-amber-500 hover:bg-red-700 text-white"
+                  >
+                    <Link href="/contact">
+                      Get in Touch
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </main>
   );
 }
