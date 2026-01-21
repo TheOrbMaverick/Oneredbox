@@ -2,9 +2,9 @@ import { aboutUs } from "@/constants/contents";
 import { Building2, Users, Award, Clock } from "lucide-react";
 
 const stats = [
-  { icon: Building2, value: "500+", label: "Projects Completed" },
-  { icon: Users, value: "150+", label: "Expert Team Members" },
-  { icon: Award, value: "40+", label: "Years of Excellence" },
+  { icon: Building2, value: "50+", label: "Projects Completed" },
+  { icon: Users, value: "8+", label: "Expert Team Members" },
+  { icon: Award, value: "14+", label: "Years of Excellence" },
   { icon: Clock, value: "98%", label: "On-Time Delivery" },
 ];
 
