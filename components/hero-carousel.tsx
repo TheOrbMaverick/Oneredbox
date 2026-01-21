@@ -8,11 +8,18 @@ import Link from "next/link";
 import Image from "next/image";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { Controller, EffectFade, Navigation, Pagination } from "swiper/modules";
+import {
+  Controller,
+  EffectFade,
+  Navigation,
+  Pagination,
+  Autoplay,
+} from "swiper/modules";
 
 import "swiper/css/navigation";
 import "swiper/css/effect-fade";
 import "swiper/css/pagination";
+import "swiper/css/autoplay";
 import { useQuery } from "@tanstack/react-query";
 import { client } from "@/sanity/lib/client";
 import { firstHeroVideoUrl } from "@/constants/info";
@@ -92,7 +99,7 @@ export function HeroCarousel() {
             }
           }}
           className="h-dvh! relative [&_.swiper-pagination-bullet]:bg-slate-300! [&_.swiper-pagination-bullet-active]:w-4! [&_.swiper-pagination-bullet-active]:rounded-full!"
-          modules={[Navigation, EffectFade, Controller, Pagination]}
+          modules={[Navigation, EffectFade, Controller, Pagination, Autoplay]}
           pagination={{ enabled: true }}
           controller={{ control: controlledSwiper }}
           // effect="fade"
