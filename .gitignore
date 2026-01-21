@@ -33,3 +33,6 @@ next-env.d.ts
 functions/**/.env*
 functions/**/.build/
 functions/**/node_modules/
+
+package-lock.json
+/package-lock.json
