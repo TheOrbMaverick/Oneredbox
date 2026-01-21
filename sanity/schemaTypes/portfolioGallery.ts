@@ -5,32 +5,39 @@ export const portfolioGalleryType = defineType({
   title: "Portfolio Gallery",
   type: "document",
   fields: [
-    defineField({
-      name: "image",
-      title: "Image",
-      type: "image",
-      fields: [
-        defineField({
-          name: "altText",
-          title: "Alternate Text",
-          type: "string",
-        }),
-      ],
-    }),
     defineField({ name: "category", title: "Category", type: "string" }),
-    // defineField({ name: "size", title: "Category", type: "string" }),
     defineField({
-      name: "size",
-      title: "Size",
-      type: "string",
-      options: {
-        list: [
-          { title: "Small", value: "small" },
-          { title: "Medium", value: "medium" },
-          { title: "Tall", value: "tall" },
-          { title: "Large", value: "large" },
-        ],
-      },
+      name: "images",
+      title: "Images",
+      type: "array",
+      validation: (Rule) =>
+        Rule.required().min(1).error("At least one image is required."),
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({
+              name: "img",
+              title: "Image",
+              type: "image",
+              options: {
+                hotspot: true,
+              },
+            }),
+            defineField({
+              name: "title",
+              title: "Title",
+              type: "string",
+            }),
+          ],
+          preview: {
+            select: {
+              title: "title",
+              media: "img",
+            },
+          },
+        },
+      ],
     }),
   ],
 });

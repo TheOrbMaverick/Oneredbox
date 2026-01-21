@@ -13,7 +13,6 @@ import {
   VideoIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import type { ProjectMedia } from "@/lib/client-projects-data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
@@ -99,7 +98,10 @@ export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
                   >
                     <div className="absolute z-10 size-full bg-linear-to-b from-black/0 to-black/50 top-0 left-0" />
                     <Image
-                      src={photo.image.url || "/placeholder.svg"}
+                      src={
+                        (photo as Record<string, any>).image.url ||
+                        "/placeholder.svg"
+                      }
                       alt={""}
                       fill
                       className="object-cover size-full"
@@ -122,7 +124,7 @@ export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
                 {photos.map((photo) => (
                   <SwiperSlide className="w-auto! [&.swiper-slide-thumb-active]:opacity-100 opacity-60 border-2 [&.swiper-slide-thumb-active]:border-accent/80 [&.swiper-slide-thumb-active]:shadow-[8px_8px_8px_rgba(0,0,0,0.2)] transition-all duration-500 lg:rounded-xl rounded-lg overflow-hidden">
                     <img
-                      src={photo.image.url}
+                      src={(photo as Record<string, any>).image.url}
                       alt=""
                       className="w-20 lg:w-[150px] h-10 lg:h-20"
                     />
@@ -213,7 +215,10 @@ export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
                   >
                     <div className="absolute z-10 size-full bg-linear-to-b from-black/0 to-black/50 top-0 left-0" />
                     <Image
-                      src={photo.image.url || "/placeholder.svg"}
+                      src={
+                        (photo as Record<string, any>).image.url ||
+                        "/placeholder.svg"
+                      }
                       alt={""}
                       fill
                       className="object-cover size-full"
@@ -236,7 +241,7 @@ export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
                 {photos.map((photo) => (
                   <SwiperSlide className="w-auto! [&.swiper-slide-thumb-active]:opacity-100 opacity-60 border-2 [&.swiper-slide-thumb-active]:border-accent/80 [&.swiper-slide-thumb-active]:shadow-[8px_8px_8px_rgba(0,0,0,0.2)] transition-all duration-500 lg:rounded-xl rounded-lg overflow-hidden">
                     <img
-                      src={photo.image.url}
+                      src={(photo as Record<string, any>).image.url}
                       alt=""
                       className="w-20 lg:w-[150px] h-10 lg:h-20"
                     />
@@ -291,7 +296,7 @@ export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
                 <SwiperSlide className="size-full relative  rounded-2xl overflow-hidden">
                   {/* <div className="absolute z-10 size-full bg-linear-to-b from-black/0 to-black/50 top-0 left-0" /> */}
                   <video
-                    src={video.video.url}
+                    src={(video as Record<string, any>).video.url}
                     // poster={vid.thumbnail}
                     controls
                     className="w-full h-full object-cover"

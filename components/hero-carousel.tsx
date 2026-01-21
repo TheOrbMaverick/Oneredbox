@@ -108,6 +108,10 @@ export function HeroCarousel() {
             nextEl: ".hero-carousel-next",
             prevEl: ".hero-carousel-prev",
           }}
+          autoplay={{
+            delay: 5000,
+            disableOnInteraction: false,
+          }}
         >
           <SwiperSlide style={{ height: "100dvh" }} className=" h-dvh relative">
             <div

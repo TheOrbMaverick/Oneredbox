@@ -2141,43 +2141,47 @@
   {
     "fields": [
       {
-        "fields": [
-          {
-            "name": "altText",
-            "type": "string",
-            "title": "Alternate Text"
-          }
-        ],
-        "name": "image",
-        "type": "image"
-      },
-      {
         "name": "category",
         "type": "string"
       },
       {
-        "options": {
-          "list": [
-            {
-              "title": "Small",
-              "value": "small"
-            },
-            {
-              "title": "Medium",
-              "value": "medium"
-            },
-            {
-              "title": "Tall",
-              "value": "tall"
-            },
-            {
-              "title": "Large",
-              "value": "large"
-            }
-          ]
-        },
-        "name": "size",
-        "type": "string"
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "min",
+                "constraint": 1
+              }
+            ],
+            "level": "error",
+            "message": "At least one image is required."
+          }
+        ],
+        "of": [
+          {
+            "fields": [
+              {
+                "options": {
+                  "hotspot": true
+                },
+                "name": "img",
+                "type": "image",
+                "title": "Image"
+              },
+              {
+                "name": "title",
+                "type": "string"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "name": "images",
+        "type": "array"
       }
     ],
     "name": "portfolioGallery",
