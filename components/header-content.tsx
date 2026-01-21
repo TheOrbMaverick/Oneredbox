@@ -142,17 +142,20 @@ export function HeaderContent({ hasSession }: HeaderContentProps) {
                   </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem asChild>
-                    <Link href="/dashboard" className="cursor-pointer">
+                  <DropdownMenuItem asChild className="hover:bg-slate-200">
+                    <a
+                      href="/dashboard"
+                      className="cursor-pointer hover:bg-slate-200"
+                    >
                       <LayoutDashboard className="mr-2 h-4 w-4" />
                       Dashboard
-                    </Link>
+                    </a>
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={handleLogout}
-                    className="cursor-pointer text-red-600 focus:text-red-600"
+                    className="cursor-pointer hover:bg-slate-200 font-semibold text-red-600 focus:text-red-600"
                   >
-                    <LogOut className="mr-2 h-4 w-4" />
+                    <LogOut className="mr-2 h-4 w-4 text-red-600" />
                     Logout
                   </DropdownMenuItem>
                 </DropdownMenuContent>

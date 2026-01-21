@@ -53,22 +53,26 @@ export function HeroCarousel() {
   }, []);
 
   return (
-    <section className="relative  h-screen w-full overflow-hidden">
+    <section className="relative h-dvh w-full overflow-hidden">
       <div className="relative">
-        <div className="flex items-center gap-2 absolute bottom-5 lg:bottom-10 right-10 z-3">
-          <button className="p-3 hero-carousel-prev rounded-full border border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 transition-colors">
+        <div className="flex items-center  gap-2 absolute bottom-18 sm:bottom-24 right-10 z-4">
+          <Button
+            variant={"outline"}
+            className="p-3 bg-transparent relative z-3 hover:text-white/80 hero-carousel-prev rounded-full border border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 transition-colors"
+          >
             <ChevronLeft className="h-5 w-5" />
-          </button>
-          <button
+          </Button>
+          <Button
+            variant={"outline"}
             onClick={() => {
               if (swiperRef.current?.swiper.activeIndex === data.length) {
                 swiperRef.current?.swiper.slideTo(0);
               }
             }}
-            className="p-3 hero-carousel-next rounded-full border border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 transition-colors"
+            className="p-3 bg-transparent relative z-3 hover:text-white/80 hero-carousel-next rounded-full border border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 transition-colors"
           >
             <ChevronRight className="h-5 w-5" />
-          </button>
+          </Button>
         </div>
         <Swiper
           ref={swiperRef}
@@ -87,7 +91,7 @@ export function HeroCarousel() {
               currentVideo.play();
             }
           }}
-          className="h-screen! relative [&_.swiper-pagination-bullet]:bg-slate-300!"
+          className="h-dvh! relative [&_.swiper-pagination-bullet]:bg-slate-300! [&_.swiper-pagination-bullet-active]:w-4! [&_.swiper-pagination-bullet-active]:rounded-full!"
           modules={[Navigation, EffectFade, Controller, Pagination]}
           pagination={{ enabled: true }}
           controller={{ control: controlledSwiper }}
@@ -98,10 +102,7 @@ export function HeroCarousel() {
             prevEl: ".hero-carousel-prev",
           }}
         >
-          <SwiperSlide
-            style={{ height: "100dvh" }}
-            className=" h-screen relative"
-          >
+          <SwiperSlide style={{ height: "100dvh" }} className=" h-dvh relative">
             <div
               className={cn(
                 "absolute inset-0 transition-opacity duration-1000 h-full! w-full",
@@ -125,10 +126,10 @@ export function HeroCarousel() {
                 }}
                 muted
                 playsInline
-                className="absolute inset-0 w-full h-screen! object-cover"
+                className="absolute inset-0 w-full h-dvh! object-cover"
                 src={firstHeroVideoUrl}
               />
-              <div className="absolute h-screen w-full bg-linear-to-r from-primary/50 via-primary/40 to-primary/50" />
+              <div className="absolute h-dvh w-full bg-linear-to-r from-primary/50 via-primary/40 to-primary/50" />
             </div>
 
             <div className="absolute bottom-20_ lg:bottom-10_ top-1/2 -translate-y-1/2 left-4 right-4 lg:left-10 z-2 ">
@@ -178,7 +179,7 @@ export function HeroCarousel() {
             data.map((testimonial: any, index: any) => (
               <SwiperSlide
                 style={{ height: "100%" }}
-                className=" h-screen relative"
+                className=" h-dvh relative"
               >
                 <div
                   key={testimonial.id}
@@ -259,7 +260,7 @@ export function HeroCarousel() {
             ))}
         </Swiper>
 
-        <div className="absolute left-4 bottom-5 sm:bottom-24 sm:left-18 z-10">
+        <div className="absolute left-4 bottom-18 sm:bottom-24 sm:left-18 z-10">
           <div className="flex gap-3 flex-col sm:flex-row">
             <Link href={"/book-service"}>
               <Button

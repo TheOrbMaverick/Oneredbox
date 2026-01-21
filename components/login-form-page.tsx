@@ -61,7 +61,9 @@ export default function LoginForm() {
         { headers: { "Content-Type": "application/json" } },
       );
       if (resData.success) {
-        router.push("/dashboard");
+        // router.refresh();
+        // router.push("/dashboard");
+        location.href = `${location.origin}/dashboard`;
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
