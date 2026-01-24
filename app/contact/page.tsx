@@ -173,9 +173,7 @@ export default function ContactPage() {
                     Reach Out to Us
                   </p>
                   <p className="font-medium">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Consectetur consequatur, distinctio maxime id impedit
-                    veritatis?
+                    We're here to help bring your vision to life. Whether you need land acquisition, building design, or construction supervision, our team is ready to assist you every step of the way.
                   </p>
                 </div>
               </div>
@@ -216,7 +214,7 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="col-start-1 md:col-start-6 row-start-2 md:row-start-1 row-end-3 w-full col-end-3 md:col-end-13 [&_label]:text-md [&_input]:text-primary [&_textarea]:text-primary [&_label]:text-primary [&_label]:font-semibold py-8 px-4 md:px-8 bordr bg-white shadow-md rounded-3xl flex flex-col gap-6">
+              <div className="col-start-1 md:col-start-6 row-start-2 md:row-start-1 row-end-3 w-full col-end-3 md:col-end-13 [&_label]:text-md [&_input]:text-primary [&_textarea]:text-primary [&_label]:text-primary [&_label]:font-semibold py-8 px-4 md:px-8 bordr bg-white shadow-md rounded-3xl flex flex-col justify-center gap-6">
                 {submitSuccess ? (
                   <div className="flex flex-col items-center justify-center py-12 text-center">
                     <CheckCircle2 className="w-16 h-16 text-green-600 mb-4" />
@@ -228,7 +226,7 @@ export default function ContactPage() {
                     </p>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+                  <form onSubmit={handleSubmit(onSubmit)} className="flex flex-1 flex-col gap-6">
                     <div className="flex flex-col md:flex-row gap-6 ">
                       <div className="grid w-full max-wsm items-center gap-3">
                         <Label htmlFor="name">Name *</Label>
@@ -267,7 +265,7 @@ export default function ContactPage() {
                       <Textarea
                         id="message"
                         placeholder="Enter your message here..."
-                        className={`flex-1 bg-white/10 bordernone max-h-[250px] rounded-xl shadow-md ${
+                        className={`flex-1 bg-white/10 bordernone max-h-[250px] min-h-[150px] rounded-xl shadow-md ${
                           errors.message ? "border-red-500" : ""
                         }`}
                         {...register("message")}
@@ -280,9 +278,9 @@ export default function ContactPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label className="text-sm font-medium text-primary">
+                      {/* <Label className="text-sm font-medium text-primary">
                         Security Verification *
-                      </Label>
+                      </Label> */}
                       <ReCAPTCHA
                         ref={recaptchaRef}
                         sitekey={
@@ -321,7 +319,7 @@ export default function ContactPage() {
                     <Button
                       type="submit"
                       disabled={isSubmitting || !isVerified}
-                      className="bgwhite textprimary bg-primary hover:bg-primary/80 font-semibold text-lg text-white py-6 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="bgwhite textprimary mt-auto bg-primary hover:bg-primary/80 font-semibold text-lg text-white py-6 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isSubmitting ? (
                         <>
