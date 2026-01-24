@@ -29,6 +29,8 @@ import {
   MapPinIcon,
 } from "lucide-react";
 import { Footer } from "@/components/footer";
+import { address, NGPhone, USPhone } from "@/constants/info";
+import Link from "next/link";
 
 const offices = [
   {
@@ -125,7 +127,12 @@ export default function ContactPage() {
                   </div>
                   <div className="">
                     <p className="font-medium">Phone Number</p>
-                    <p className="text-md font-semibold">+1 234 5555 434</p>
+                    <div className="flex gap-4">
+                      <p className="text-md font-semibold">
+                        <Link href={`tel:${NGPhone}`}>{NGPhone}</Link>
+                      </p>
+                      <p className="text-md font-semibold">{USPhone}</p>
+                    </div>
                   </div>
                 </div>
 
@@ -135,7 +142,7 @@ export default function ContactPage() {
                   </div>
                   <div className="">
                     <p className="font-medium">Our Office</p>
-                    <p className="text-md font-semibold">+1 234 5555 434</p>
+                    <p className="text-md font-semibold">{address}</p>
                   </div>
                 </div>
               </div>

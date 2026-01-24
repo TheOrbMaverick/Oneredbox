@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   MultiStepForm,
   type FormStep,
@@ -33,6 +33,7 @@ import { client } from "@/config/sanity";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const combinedSchema = z.object({
   ...constructionSupervisionStep1Schema.shape,
@@ -46,6 +47,11 @@ const combinedSchema = z.object({
 type FormData = z.infer<typeof combinedSchema>;
 
 export default function ConstructionSupervisionPage() {
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
+
   const methods = useForm<FormData>({
     resolver: zodResolver(combinedSchema),
     mode: "onChange",
@@ -60,6 +66,46 @@ export default function ConstructionSupervisionPage() {
     control,
     formState: { errors },
   } = methods;
+
+  const handleRecaptchaChange = async (token: string | null) => {
+    if (!token) {
+      setRecaptchaToken(null);
+      setIsVerified(false);
+      return;
+    }
+
+    setRecaptchaToken(token);
+    setIsVerifying(true);
+
+    try {
+      const verifyResponse = await fetch("/api/verify-recaptcha", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token }),
+      });
+
+      const verifyData = await verifyResponse.json();
+
+      if (verifyData.success) {
+        setIsVerified(true);
+      } else {
+        setIsVerified(false);
+        setRecaptchaToken(null);
+        alert("reCAPTCHA verification failed. Please try again.");
+        recaptchaRef.current?.reset();
+      }
+    } catch (error) {
+      console.error("Error verifying reCAPTCHA:", error);
+      setIsVerified(false);
+      setRecaptchaToken(null);
+      alert("Error verifying reCAPTCHA. Please try again.");
+      recaptchaRef.current?.reset();
+    } finally {
+      setIsVerifying(false);
+    }
+  };
 
   const steps: FormStep[] = useMemo(
     () => [
@@ -449,6 +495,45 @@ export default function ConstructionSupervisionPage() {
               ]}
             />
             <FormField
+              label="How did you hear about us?"
+              name="referralSource"
+              required
+            >
+              <Controller
+                control={control}
+                name="referralSource"
+                render={({ field }) => (
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger
+                      className={
+                        errors.referralSource ? "border-destructive" : ""
+                      }
+                    >
+                      <SelectValue placeholder="Select an option" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="social-media">
+                        Social Media (Facebook, Instagram, Twitter)
+                      </SelectItem>
+                      <SelectItem value="google-search">
+                        Google Search
+                      </SelectItem>
+                      <SelectItem value="friend-referral">
+                        Friend/Family Referral
+                      </SelectItem>
+                      <SelectItem value="previous-client">
+                        Previous Client
+                      </SelectItem>
+                      <SelectItem value="advertisement">
+                        Advertisement
+                      </SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+            </FormField>
+            <FormField
               label="Additional Notes or Requirements"
               name="additionalNotes"
             >
@@ -459,6 +544,38 @@ export default function ConstructionSupervisionPage() {
                 {...register("additionalNotes")}
               />
             </FormField>
+            <div className="space-y-2">
+              <Label className="text-sm font-medium text-foreground">
+                Security Verification *
+              </Label>
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey={
+                  process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ||
+                  "6LeohFQsAAAAAMfBpzl7D0OsIMtUClX287Q8N8t6"
+                }
+                onChange={handleRecaptchaChange}
+                onExpired={() => {
+                  setRecaptchaToken(null);
+                  setIsVerified(false);
+                }}
+              />
+              {isVerifying && (
+                <p className="text-sm text-blue-600">
+                  Verifying reCAPTCHA...
+                </p>
+              )}
+              {!isVerified && !isVerifying && (
+                <p className="text-sm text-muted-foreground">
+                  Please complete the reCAPTCHA to submit the form
+                </p>
+              )}
+              {isVerified && (
+                <p className="text-sm text-green-600">
+                  ✓ Verified successfully
+                </p>
+              )}
+            </div>
           </div>
         ),
       },
@@ -467,14 +584,25 @@ export default function ConstructionSupervisionPage() {
   );
 
   const handleSubmit = async (data: FormData) => {
+    if (!isVerified) {
+      alert("Please complete and verify the reCAPTCHA");
+      return;
+    }
+
     try {
       const payload: SanityDocumentStub<Record<string, any>> = {
         _type: "constructionSupervision",
         ...data,
+        recaptchaVerified: true,
       };
       await client.create(payload);
+      // Reset reCAPTCHA after successful submission
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
+      setIsVerified(false);
     } catch (error) {
       console.log("An Error occured while submitting form", error);
+      alert("An error occurred. Please try again.");
     }
   };
 
@@ -502,7 +630,11 @@ export default function ConstructionSupervisionPage() {
       <section className="py-12 lg:py-16">
         <div className="container mx-auto px-4 lg:px-8">
           <FormProvider {...methods}>
-            <MultiStepForm steps={steps} onSubmit={handleSubmit} />
+            <MultiStepForm 
+              steps={steps} 
+              onSubmit={handleSubmit}
+              canSubmit={isVerified}
+            />
           </FormProvider>
         </div>
       </section>

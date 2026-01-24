@@ -95,6 +95,7 @@ export const landAcquisitionStep5Schema = z.object({
   perfection: z.enum(["yes", "no"]).optional(),
   fencing: z.enum(["yes", "no"]).optional(),
   additionalNotes: z.string().optional(),
+  referralSource: z.string().min(1, "Please tell us how you heard about us"),
 });
 
 // ============================================
@@ -160,6 +161,7 @@ export const buildingDesignStep7Schema = z.object({
   landscapeDesign: z.enum(["yes", "no"]).optional(),
   render3d: z.enum(["yes", "no"]).optional(),
   additionalNotes: z.string().optional(),
+  referralSource: z.string().min(1, "Please tell us how you heard about us"),
 });
 
 // ============================================
@@ -214,6 +216,7 @@ export const constructionSupervisionStep6Schema = z.object({
   costEstimation: z.enum(["yes", "no"]).optional(),
   progressReports: z.enum(["yes", "no"]).optional(),
   additionalNotes: z.string().optional(),
+  referralSource: z.string().min(1, "Please tell us how you heard about us"),
 });
 
 // Type exports
