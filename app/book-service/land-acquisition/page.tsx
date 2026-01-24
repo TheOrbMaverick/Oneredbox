@@ -26,8 +26,6 @@ import {
   landAcquisitionStep5Schema,
 } from "@/lib/form-schemas";
 import { FormInput } from "@/components/ui/form-input";
-import { client } from "@/config/sanity";
-import { SanityDocumentStub } from "next-sanity";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -623,12 +621,23 @@ export default function LandAcquisitionPage() {
     }
 
     try {
-      const payload: SanityDocumentStub<Record<string, any>> = {
-        _type: "landAcquisition",
-        ...data,
-        recaptchaVerified: true,
-      };
-      await client.create(payload);
+      const response = await fetch("/api/forms/land-acquisition", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          recaptchaVerified: true,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error || "Failed to submit form");
+      }
+
       // Reset reCAPTCHA after successful submission
       recaptchaRef.current?.reset();
       setRecaptchaToken(null);

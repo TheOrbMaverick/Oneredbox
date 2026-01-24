@@ -28,8 +28,6 @@ import {
   buildingDesignStep7Schema,
 } from "@/lib/form-schemas";
 import { FormInput } from "@/components/ui/form-input";
-import { SanityDocumentStub } from "next-sanity";
-import { client } from "@/config/sanity";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -848,12 +846,23 @@ export default function BuildingDesignPage() {
     }
 
     try {
-      const payload: SanityDocumentStub<Record<string, any>> = {
-        _type: "buildingDesign",
-        ...data,
-        recaptchaVerified: true,
-      };
-      await client.create(payload);
+      const response = await fetch("/api/forms/building-design", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          recaptchaVerified: true,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error || "Failed to submit form");
+      }
+
       // Reset reCAPTCHA after successful submission
       recaptchaRef.current?.reset();
       setRecaptchaToken(null);
