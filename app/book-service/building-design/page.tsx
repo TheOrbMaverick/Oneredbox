@@ -870,6 +870,8 @@ export default function BuildingDesignPage() {
     } catch (error) {
       console.log("An error occured while submitting form", error);
       alert("An error occurred. Please try again.");
+      // Re-throw so multi-step-form knows submission failed
+      throw error;
     }
   };
 

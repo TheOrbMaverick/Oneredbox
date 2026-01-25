@@ -70,13 +70,13 @@ export function MultiStepForm({ steps, onSubmit, canSubmit = true }: MultiStepFo
 
     setIsSubmitting(true);
     try {
-      
       await onSubmit(data);
-      setIsSubmitting(false);
+      // Only set complete if submission succeeded (no error thrown)
       setIsComplete(true);
     } catch (error) {
-      
-    }finally {
+      console.error("Form submission error:", error);
+      // Don't set isComplete on error - user stays on form
+    } finally {
       setIsSubmitting(false);
     }
   };

@@ -612,6 +612,8 @@ export default function ConstructionSupervisionPage() {
     } catch (error) {
       console.log("An Error occured while submitting form", error);
       alert("An error occurred. Please try again.");
+      // Re-throw so multi-step-form knows submission failed
+      throw error;
     }
   };
 

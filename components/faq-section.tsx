@@ -12,6 +12,7 @@ import {
   USRegistrationNumber,
 } from "@/constants/info";
 import {
+  Building2,
   Mail,
   MailIcon,
   MapPinIcon,
@@ -19,6 +20,8 @@ import {
   PhoneIcon,
   Stamp,
 } from "lucide-react";
+import Link from "next/link";
+import { Separator } from "./ui/separator";
 
 const faqs = [
   {
@@ -86,37 +89,38 @@ export function FaqSection() {
               <h3 className="font-semibold text-foreground mb-2">
                 Still have questions?
               </h3>
-              <p className="text-muted-foreground text-sm mb-4">
+              <p className="text-muted-foreground mb-4">
                 Our team is ready to help you with any questions about your
                 project.
               </p>
               <div className="">
-                <p>Reach Out:</p>
-                <div className="mt-2 space-y-3">
-                  <a
+                <p className="font-semibold">Reach Out:</p>
+                <div className="mt-2 flex flex-col gap-3">
+                  <Link
                     href="mailto:info@oneredbox.com"
-                    className="flex gap-2 text-lg items-center underline"
+                    className="flex gap-2 text-lg items-center "
                   >
-                    <Mail className="text-accent" />
+                    <Mail className="textaccent size-5 mt-1" />
                     <span>{email}</span>
-                  </a>
-
-                  <div className="flex items-center gap-2 md:text-lg">
-                    <Phone className="text-accent" />
-                    <div className="flex flex-col gap-1">
+                  </Link>
+<Separator className="" />
+                  <div className="flex items-center gap-2 md:textlg">
+                    <Phone className="size-5" />
+                    <div className="flex flexcol gap-3">
                       <a href="tel:5551234567">{USPhone}</a>
                       <a href="tel:2347012345678">{NGPhone}</a>
                     </div>
                   </div>
 
+<Separator/>
                   <div className="flex items-center gap-3 ">
-                    <Stamp className="h-5 w-5 text-accent" />
-                    <div className="">
-                      <p className="text-sm flex items-center gap-2">
+                    <Building2 className="size-5 textaccent" />
+                    <div className="flex gap-4">
+                      <p className="textsm flex items-center gap-2">
                         {USRegistrationNumber}{" "}
                         <span className="font-semibold">- US</span>
                       </p>
-                      <p className="text-sm flex items-center gap-2">
+                      <p className="textsm flex items-center gap-2">
                         {NGRegistrationNumber}{" "}
                         <span className="font-semibold">- NG</span>
                       </p>

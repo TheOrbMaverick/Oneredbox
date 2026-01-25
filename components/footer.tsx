@@ -8,6 +8,7 @@ import {
   Linkedin,
   Instagram,
   Stamp,
+  Building2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -70,7 +71,7 @@ export function Footer() {
                 <span>{email}</span>
               </div>
               <div className="flex items-center gap-3 text-primary-foreground/70">
-                <Stamp className="h-5 w-5 text-accent" />
+                <Building2 className="h-5 w-5 text-accent" />
                 <p className="text-sm flex items-center gap-2">
                   {USRegistrationNumber}{" "}
                   <span className="font-semibold">- US</span>
