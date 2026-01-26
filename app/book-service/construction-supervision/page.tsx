@@ -531,6 +531,20 @@ export default function ConstructionSupervisionPage() {
                 )}
               />
             </FormField>
+            <div className="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="optInVideoUpdates"
+                {...register("optInVideoUpdates")}
+                className="mt-1 h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+              />
+              <Label
+                htmlFor="optInVideoUpdates"
+                className="text-sm font-normal cursor-pointer"
+              >
+                Opt in for Live Site Video Updates
+              </Label>
+            </div>
             <FormField
               label="Additional Notes or Requirements"
               name="additionalNotes"
@@ -595,7 +609,6 @@ export default function ConstructionSupervisionPage() {
         },
         body: JSON.stringify({
           ...data,
-          recaptchaVerified: true,
         }),
       });
 
