@@ -33,11 +33,14 @@ interface ProjectMediaGalleryProps {
 
 export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
   const [photosThumbsSwiper, setPhotoThumbsSwiper] = useState<any>(null);
+  const [videosThumbsSwiper, setVideoThumbsSwiper] = useState<any>(null);
   const [expandedPhotosThumbsSwiper, setExpandedPhotoThumbsSwiper] =
     useState<any>(null);
   const photos = media.filter((m) => m.type === "photo");
   const videos = media.filter((m) => m.type === "video");
   const [expanded, setExpanded] = useState<boolean>(false);
+
+  console.log("videos", videos);
 
   return (
     <>
@@ -126,7 +129,7 @@ export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
                     <img
                       src={(photo as Record<string, any>).image.url}
                       alt=""
-                      className="w-20 lg:w-[150px] h-10 lg:h-20"
+                      className="w-20 lg:w-37.5 h-10 lg:h-20"
                     />
                   </SwiperSlide>
                 ))}
@@ -139,6 +142,9 @@ export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
         onValueChange={(value) => {
           if (value === "videos") {
             setPhotoThumbsSwiper(null);
+          }
+          if (value === "photos") {
+            setVideoThumbsSwiper(null);
           }
         }}
         defaultValue="photos"
@@ -238,13 +244,19 @@ export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
                 className="mySwiper py-5"
                 style={{ paddingBlock: 20, paddingInline: 12 }}
               >
-                {photos.map((photo) => (
-                  <SwiperSlide className="w-auto! [&.swiper-slide-thumb-active]:opacity-100 opacity-60 border-2 [&.swiper-slide-thumb-active]:border-accent/80 [&.swiper-slide-thumb-active]:shadow-[8px_8px_8px_rgba(0,0,0,0.2)] transition-all duration-500 lg:rounded-xl rounded-lg overflow-hidden">
+                {photos.map((photo, index) => (
+                  <SwiperSlide
+                    key={index}
+                    className="w-auto! [&.swiper-slide-thumb-active]:opacity-100 opacity-60 border-2 [&.swiper-slide-thumb-active]:border-accent/80 [&.swiper-slide-thumb-active]:shadow-[8px_8px_8px_rgba(0,0,0,0.2)] transition-all duration-500 lg:rounded-xl rounded-lg overflow-hidden relative"
+                  >
                     <img
                       src={(photo as Record<string, any>).image.url}
                       alt=""
-                      className="w-20 lg:w-[150px] h-10 lg:h-20"
+                      className="w-20 lg:w-37.5 h-16 lg:h-20"
                     />
+                    <p className="absolute bottom-0 left-0 text-sm leading-none sm:text-base bg-white/80 text-center w-full">
+                      {photo.date}
+                    </p>
                   </SwiperSlide>
                 ))}
               </Swiper>
@@ -268,44 +280,77 @@ export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
               </div>
             </div>
           ) : (
-            <Swiper
-              className="relative h-[250px]! md:h-[400px]!"
-              modules={[Navigation]}
-              navigation={{
-                enabled: true,
-                nextEl: ".media-videos-next",
-                prevEl: ".media-videos-prev",
-              }}
-            >
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute left-4 media-videos-prev top-1/2 z-2 -translate-y-1/2 h-12 w-12 rounded-full bg-white/90 hover:bg-white text-zinc-900 shadow-lg"
+            <div className="">
+              <Swiper
+                className="relative h-[250px]! md:h-[400px]!"
+                modules={[Navigation, FreeMode, Thumbs]}
+                thumbs={{ swiper: videosThumbsSwiper }}
+                navigation={{
+                  enabled: true,
+                  nextEl: ".media-videos-next",
+                  prevEl: ".media-videos-prev",
+                }}
               >
-                <ChevronLeft className="h-6 w-6" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute right-4 media-videos-next top-1/2 z-2 -translate-y-1/2 h-12 w-12 rounded-full bg-white/90 hover:bg-white text-zinc-900 shadow-lg"
-              >
-                <ChevronRight className="h-6 w-6" />
-              </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute left-4 media-videos-prev top-1/2 z-2 -translate-y-1/2 h-12 w-12 rounded-full bg-white/90 hover:bg-white text-zinc-900 shadow-lg"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-4 media-videos-next top-1/2 z-2 -translate-y-1/2 h-12 w-12 rounded-full bg-white/90 hover:bg-white text-zinc-900 shadow-lg"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </Button>
 
-              {videos.map((video) => (
-                <SwiperSlide className="size-full relative  rounded-2xl overflow-hidden">
-                  {/* <div className="absolute z-10 size-full bg-linear-to-b from-black/0 to-black/50 top-0 left-0" /> */}
-                  <video
-                    src={(video as Record<string, any>).video.url}
-                    // poster={vid.thumbnail}
-                    controls
-                    className="w-full h-full object-cover"
+                {videos.map((video) => (
+                  <SwiperSlide className="size-full relative  rounded-2xl overflow-hidden">
+                    {/* <div className="absolute z-10 size-full bg-linear-to-b from-black/0 to-black/50 top-0 left-0" /> */}
+                    <video
+                      src={(video as Record<string, any>).video.url}
+                      // poster={vid.thumbnail}
+                      controls
+                      className="w-full h-full object-cover"
+                    >
+                      Your browser does not support the video tag.
+                    </video>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+
+              <Swiper
+                onSwiper={setVideoThumbsSwiper}
+                spaceBetween={12}
+                slidesPerView={"auto"}
+                freeMode={true}
+                watchSlidesProgress={true}
+                modules={[FreeMode, Navigation, Thumbs]}
+                className="mySwiper py-5"
+                style={{ paddingBlock: 20, paddingInline: 12 }}
+              >
+                {videos.map((video, index) => (
+                  <SwiperSlide
+                    key={index}
+                    className="w-auto! [&.swiper-slide-thumb-active]:opacity-100 opacity-60 border-2 [&.swiper-slide-thumb-active]:border-accent/80 [&.swiper-slide-thumb-active]:shadow-[8px_8px_8px_rgba(0,0,0,0.2)] transition-all duration-500 lg:rounded-xl rounded-lg overflow-hidden relative"
                   >
-                    Your browser does not support the video tag.
-                  </video>
-                </SwiperSlide>
-              ))}
-            </Swiper>
+                    <img
+                      src={
+                        (video as Record<string, any>).thumbnail?.url ??
+                        "/placeholder.svg"
+                      }
+                      alt=""
+                      className="w-20 lg:w-37.5 h-16 lg:h-20 object-cover"
+                    />
+                    <p className="absolute bottom-0 left-0 text-sm leading-none sm:text-base bg-white/80 text-center w-full">
+                      {video.date}
+                    </p>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
           )}
         </TabsContent>
       </Tabs>

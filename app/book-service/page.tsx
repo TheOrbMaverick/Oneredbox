@@ -35,7 +35,7 @@ export default function BookServicePage() {
       {/* Hero Section */}
       <section className="pt-24 pb-16 lg:pt-32 lg:pb-24 bg-zinc-900 text-white">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="max-w-3xl">
+          <div className="max-w-4xl">
             <span className="inline-block px-4 py-1.5 bg-accent/20 text-accent text-sm font-medium rounded-full mb-6">
               Trusted by Nigerians in the Diaspora
             </span>
@@ -48,15 +48,15 @@ export default function BookServicePage() {
               scams, or uncertainty. We handle everything on the ground while
               you stay informed every step of the way.
             </p>
-            <div className="flex flex-wrap gap-6">
+            <div className="flex_ grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] items-start flex-wrap gap-6">
               {bookServicesTrustPoints.map((point) => (
-                <div key={point.title} className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-red-600/20 flex items-center justify-center">
+                <div key={point.title} className="flex items-start gap-3">
+                  <div className="size-10 min-w-10 min-h-10 rounded-full mt-1 bg-red-600/20 flex items-center justify-center">
                     <point.icon className="h-5 w-5 text-red-500" />
                   </div>
                   <div>
                     <p className="font-medium text-white">{point.title}</p>
-                    <p className="text-sm text-zinc-500">{point.description}</p>
+                    <p className="text-sm text-zinc-400">{point.description}</p>
                   </div>
                 </div>
               ))}
