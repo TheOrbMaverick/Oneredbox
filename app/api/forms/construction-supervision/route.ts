@@ -17,7 +17,6 @@ export async function POST(req: Request) {
     const payload = {
       _type: "constructionSupervision",
       ...data,
-      submittedAt: new Date().toISOString(),
     };
 
     const result = await client.create(payload);

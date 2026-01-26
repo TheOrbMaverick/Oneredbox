@@ -9,7 +9,7 @@ export async function POST(req: Request) {
     if (!data.fullName || !data.email || !data.phone) {
       return NextResponse.json(
         { success: false, error: "Missing required fields" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -17,7 +17,6 @@ export async function POST(req: Request) {
     const payload = {
       _type: "buildingDesign",
       ...data,
-      submittedAt: new Date().toISOString(),
     };
 
     const result = await client.create(payload);
@@ -30,7 +29,7 @@ export async function POST(req: Request) {
     console.error("Error submitting building design form:", error);
     return NextResponse.json(
       { success: false, error: "Failed to submit form" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

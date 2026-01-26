@@ -566,6 +566,20 @@ export default function LandAcquisitionPage() {
               )}
             />
           </FormField>
+          <div className="flex items-start gap-3">
+            <input
+              type="checkbox"
+              id="optInVideoUpdates"
+              {...register("optInVideoUpdates")}
+              className="mt-1 h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+            />
+            <Label
+              htmlFor="optInVideoUpdates"
+              className="text-sm font-normal cursor-pointer"
+            >
+              Opt in for Live Site Video Updates
+            </Label>
+          </div>
           <FormField
             label="Additional Notes or Requirements"
             name="additionalNotes"
@@ -594,9 +608,7 @@ export default function LandAcquisitionPage() {
               }}
             />
             {isVerifying && (
-              <p className="text-sm text-blue-600">
-                Verifying reCAPTCHA...
-              </p>
+              <p className="text-sm text-blue-600">Verifying reCAPTCHA...</p>
             )}
             {!isVerified && !isVerifying && (
               <p className="text-sm text-muted-foreground">
@@ -604,9 +616,7 @@ export default function LandAcquisitionPage() {
               </p>
             )}
             {isVerified && (
-              <p className="text-sm text-green-600">
-                ✓ Verified successfully
-              </p>
+              <p className="text-sm text-green-600">✓ Verified successfully</p>
             )}
           </div>
         </div>
@@ -628,7 +638,6 @@ export default function LandAcquisitionPage() {
         },
         body: JSON.stringify({
           ...data,
-          recaptchaVerified: true,
         }),
       });
 
@@ -674,8 +683,8 @@ export default function LandAcquisitionPage() {
       <section className="py-12 lg:py-16">
         <div className="container mx-auto px-4 lg:px-8">
           <FormProvider {...methods}>
-            <MultiStepForm 
-              steps={steps} 
+            <MultiStepForm
+              steps={steps}
               onSubmit={handleSubmit}
               canSubmit={isVerified}
             />
