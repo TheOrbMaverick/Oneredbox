@@ -824,7 +824,7 @@ export default function BuildingDesignPage() {
               ref={recaptchaRef}
               sitekey={
                 process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ||
-                "6LeohFQsAAAAAMfBpzl7D0OsIMtUClX287Q8N8t6"
+                ""
               }
               onChange={handleRecaptchaChange}
               onExpired={() => {
