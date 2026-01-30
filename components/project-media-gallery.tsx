@@ -40,7 +40,6 @@ export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
   const videos = media.filter((m) => m.type === "video");
   const [expanded, setExpanded] = useState<boolean>(false);
 
-  console.log("videos", videos);
 
   return (
     <>

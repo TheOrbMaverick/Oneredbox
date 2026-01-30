@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { client } from "@/config/sanity";
+import { sendBookingEmail } from "@/lib/email";
 
 export async function POST(req: Request) {
   try {
@@ -21,10 +22,22 @@ export async function POST(req: Request) {
 
     const result = await client.create(payload);
 
-    return NextResponse.json({
-      success: true,
-      documentId: result._id,
-    });
+    // Send email notification (fire and forget)
+    try {
+      await sendBookingEmail("Land Acquisition", data);
+    } catch (emailError) {
+      console.error("Failed to send email notification:", emailError);
+      // Continue execution to return success for the booking
+    }
+
+    return NextResponse.json(
+      {
+        success: true,
+        documentId: result._id,
+        message: "Booking submitted successfully",
+      },
+      { status: 201 }
+    );
   } catch (error) {
     console.error("Error submitting land acquisition form:", error);
     return NextResponse.json(

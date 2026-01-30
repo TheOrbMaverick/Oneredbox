@@ -36,7 +36,6 @@ export default function PropertyDetailsPage() {
   // const { id } = await params;
   // const property = getPropertyById(Number.parseInt(id, 10));
   const { id } = useParams();
-  console.log("page Id", id);
   const {
     data: property,
     isLoading,

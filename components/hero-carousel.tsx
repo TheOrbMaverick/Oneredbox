@@ -47,7 +47,7 @@ export function HeroCarousel() {
         );
         return data;
       } catch (error) {
-        console.log("An Error Occured while fetching hero testimonials");
+        console.error("An Error Occured while fetching hero testimonials");
         return Promise.reject(new Error("Hero Testimonial Error"));
       }
     },
@@ -276,7 +276,7 @@ export function HeroCarousel() {
             <Link href={"/book-service"}>
               <Button
                 size="lg"
-                className="bg-accent text-white font-semibold hover:bg-accent/90"
+                className="bg-red-500 text-white font-semibold hover:bg-accent/90"
               >
                 Start Your Project
               </Button>
@@ -287,7 +287,7 @@ export function HeroCarousel() {
               <Button
                 size="lg"
                 variant="outline"
-                className="text-white  hover:text-white hover:bg-accent/30 bg-white/5 border-accent font-semibold cursor-pointer"
+                className="text-white  hover:text-white hover:bg-red-500/30 bg-white/5 border-red-500 font-semibold cursor-pointer"
               >
                 View Demo Dashboard
               </Button>

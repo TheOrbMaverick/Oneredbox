@@ -623,7 +623,7 @@ export default function ConstructionSupervisionPage() {
       setRecaptchaToken(null);
       setIsVerified(false);
     } catch (error) {
-      console.log("An Error occured while submitting form", error);
+      console.error(error);
       alert("An error occurred. Please try again.");
       // Re-throw so multi-step-form knows submission failed
       throw error;

@@ -877,7 +877,7 @@ export default function BuildingDesignPage() {
       setRecaptchaToken(null);
       setIsVerified(false);
     } catch (error) {
-      console.log("An error occured while submitting form", error);
+      console.error(error);
       alert("An error occurred. Please try again.");
       // Re-throw so multi-step-form knows submission failed
       throw error;

@@ -75,10 +75,10 @@ export default function ForSalePage() {
                   <Skeleton className="h-56 bg-slate-200 rounded-xl" />
                   <CardContent className=" px-2 py-0">
                     <Skeleton className="bg-slate-200 h-5 w-5/12 rounded-sm mb-2" />
-                    <Skeleton className="h-6 w-10/12 mb-4" />
-                    <Skeleton className="h-8 w-40 mb-6 rounded-lg" />
+                    <Skeleton className="h-6 w-10/12 mb-4 bg-slate-200" />
+                    <Skeleton className="h-8 w-40 mb-6 rounded-lg bg-slate-200" />
 
-                    <Skeleton className="h-10" />
+                    <Skeleton className="h-10 bg-slate-200" />
                   </CardContent>
                 </Card>
               ))}
