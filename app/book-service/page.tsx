@@ -36,7 +36,7 @@ export default function BookServicePage() {
       <section className="pt-24 pb-16 lg:pt-32 lg:pb-24 bg-zinc-900 text-white">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-4xl">
-            <span className="inline-block px-4 py-1.5 bg-accent/20 text-accent text-sm font-medium rounded-full mb-6">
+            <span className="inline-block px-4 py-1.5 bg-red-500/20 text-red-500 text-sm font-medium rounded-full mb-6">
               Trusted by Nigerians in the Diaspora
             </span>
             <h1 className="text-4xl lg:text-5xl font-bold leading-tight mb-6 text-balance">
@@ -86,9 +86,9 @@ export default function BookServicePage() {
               >
                 <CardHeader>
                   <div
-                    className={`w-14 h-14 rounded-xl flex items-center justify-center mb-4 bg-accent/10`}
+                    className={`w-14 h-14 rounded-xl flex items-center justify-center mb-4 bg-red-500/10`}
                   >
-                    <service.icon className={`h-7 w-7 text-accent`} />
+                    <service.icon className={`h-7 w-7 text-red-500`} />
                   </div>
                   <CardTitle className="text-xl">{service.title}</CardTitle>
                   <CardDescription className="text-base">
@@ -99,7 +99,7 @@ export default function BookServicePage() {
                   <ul className="space-y-3">
                     {service.features.map((feature, i) => (
                       <li key={i} className="flex items-start gap-3">
-                        <Check className="h-5 w-5 text-accent shrink-0 mt-0.5" />
+                        <Check className="h-5 w-5 text-red-500 shrink-0 mt-0.5" />
                         <span className="text-sm text-muted-foreground">
                           {feature}
                         </span>
@@ -108,7 +108,7 @@ export default function BookServicePage() {
                   </ul>
                   <div className="mt-6 pt-6 border-t border-border">
                     <Link href={service.href}>
-                      <Button className="w-full bg-transparent hover:bg-accent/10 hovertext-white text-accent border-[1.5px] border-accent py-6 rounded-xl font-semibold">
+                      <Button className="w-full bg-transparent hover:bg-red-500/10 hovertext-white text-red-500 border-[1.5px] border-red-500 py-6 rounded-xl font-semibold">
                         Book a Free Consultation
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>

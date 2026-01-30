@@ -58,20 +58,20 @@ export function Footer() {
             </p>
             <div className="space-y-3">
               <div className="flex items-center gap-3 text-primary-foreground/70">
-                <MapPin className="h-5 w-5 text-accent" />
+                <MapPin className="h-5 w-5 text-white/80" />
                 <span>{address}</span>
               </div>
               <div className="flex items-center gap-3 text-primary-foreground/70">
-                <Phone className="h-5 w-5 text-accent" />
+                <Phone className="h-5 w-5 text-white/80" />
                 <span>{USPhone}</span>
                 <span>{NGPhone}</span>
               </div>
               <div className="flex items-center gap-3 text-primary-foreground/70">
-                <Mail className="h-5 w-5 text-accent" />
+                <Mail className="h-5 w-5 text-white/80" />
                 <span>{email}</span>
               </div>
               <div className="flex items-center gap-3 text-primary-foreground/70">
-                <Building2 className="h-5 w-5 text-accent" />
+                <Building2 className="h-5 w-5 text-white/80" />
                 <p className="text-sm flex items-center gap-2">
                   {USRegistrationNumber}{" "}
                   <span className="font-semibold">- US</span>
@@ -92,7 +92,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-primary-foreground/70 hover:text-accent transition-colors"
+                    className="text-primary-foreground/70 hover:text-red-500 transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -107,10 +107,10 @@ export function Footer() {
                 key={social.label}
                 href={social.href}
                 aria-label={social.label}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 hover:text-red-500 transition-colors"
               >
-                <span className="p-2 inline-flex rounded-full bg-primary-foreground/10 hover:bg-accent text-primary-foreground hover:text-accent-foreground transition-colors">
-                  <social.icon className="h-5 w-5" />
+                <span className="p-2 inline-flex rounded-full bg-primary-foreground/10 text-primary-foreground transition-colors">
+                  <social.icon className="h-5 w-5 text-inherit" />
                 </span>
                 <span className="hidden sm:block">{social.label}</span>
               </Link>

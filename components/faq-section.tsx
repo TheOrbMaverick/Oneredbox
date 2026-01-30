@@ -73,7 +73,7 @@ export function FaqSection() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Header */}
           <div>
-            <span className="text-accent font-semibold text-lg uppercase tracking-wider">
+            <span className="text-red-500 font-semibold text-lg uppercase tracking-wider">
               FAQ
             </span>
             <h2 className="text-3xl lg:text-5xl font-bold text-foreground mt-4 mb-6 leading-tight text-balance">
@@ -100,7 +100,7 @@ export function FaqSection() {
                     href="mailto:info@oneredbox.com"
                     className="flex gap-2 text-lg items-center "
                   >
-                    <Mail className="textaccent size-5 mt-1" />
+                    <Mail className=" size-5 mt-1" />
                     <span>{email}</span>
                   </Link>
 <Separator className="" />
@@ -114,7 +114,7 @@ export function FaqSection() {
 
 <Separator/>
                   <div className="flex items-center gap-3 ">
-                    <Building2 className="size-5 textaccent" />
+                    <Building2 className="size-5" />
                     <div className="flex gap-4">
                       <p className="textsm flex items-center gap-2">
                         {USRegistrationNumber}{" "}
@@ -144,9 +144,9 @@ export function FaqSection() {
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="bg-white shadow-md border border-border rounded-xl px-6 data-[state=open]:border-accent/50"
+                  className="bg-white shadow-md border border-border rounded-xl px-6 data-[state=open]:border-red-500/50"
                 >
-                  <AccordionTrigger className="text-left font-semibold text-foreground hover:text-accent py-5">
+                  <AccordionTrigger className="text-left font-semibold text-foreground hover:text-red-500 py-5">
                     {faq.question}
                   </AccordionTrigger>
                   <AccordionContent className="text-muted-foreground pb-5">

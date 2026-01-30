@@ -15,7 +15,7 @@ export function AboutSection() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Content */}
           <div className="text-center">
-            <div className="text-accent text-center font-semibold text-sm uppercase tracking-wider">
+            <div className="text-red-500 text-center font-semibold text-sm uppercase tracking-wider">
               About Our Company
             </div>
             <h2 className="text-3xl lg:text-5xl text-center font-bold text-foreground mt-4 mb-6 leading-tight text-balance">
@@ -37,8 +37,8 @@ export function AboutSection() {
                   key={stat.label}
                   className="flex items-center md:items-start gap-2 lg:gap-4"
                 >
-                  <div className="p-3 bg-gray-200 rounded-lg">
-                    <stat.icon className="h-4 w-4 lg:h-6 lg:w-6 text-accent" />
+                  <div className="p-3 bg-red-500/10 rounded-lg">
+                    <stat.icon className="h-4 w-4 lg:h-6 lg:w-6 text-red-500" />
                   </div>
                   <div className=" text-left">
                     <p className="text-2xl  text-left lg:text-3xl font-bold text-foreground">

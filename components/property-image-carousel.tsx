@@ -86,7 +86,7 @@ export function PropertyImageCarousel({
             style={{ paddingInline: 12, paddingBlock: 12 }}
           >
             {images.map((image) => (
-              <SwiperSlide className="w-auto! [&.swiper-slide-thumb-active]:opacity-100 opacity-60 border-2 [&.swiper-slide-thumb-active]:border-accent/80 [&.swiper-slide-thumb-active]:shadow-[6px_6px_8px_rgba(0,0,0,0.2)] transition-all duration-500 lg:rounded-none roundedlg overflow-hidden relative p-0!">
+              <SwiperSlide className="w-auto! [&.swiper-slide-thumb-active]:opacity-100 opacity-60 border-2 [&.swiper-slide-thumb-active]:border-red-500/80 [&.swiper-slide-thumb-active]:shadow-[6px_6px_8px_rgba(0,0,0,0.2)] transition-all duration-500 lg:rounded-none roundedlg overflow-hidden relative p-0!">
                 <Image
                   src={image ? urlFor(image).url() : "/placeholder.svg"}
                   alt={`${title} - Image ${currentIndex + 1}`}

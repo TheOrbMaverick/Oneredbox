@@ -147,14 +147,14 @@ export function HeroCarousel() {
               <div className="h-auto! items-end flex!">
                 <div className="lg:max-w-3xl self-end">
                   {/* Project Tag */}
-                  <div className="inline-flex items-center gap-2 bg-accent/20 text-accent px-4 py-2 rounded-full text-sm font-medium mb-6 backdrop-blur-sm">
-                    <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+                  <div className="inline-flex items-center gap-2 bg-red-500/10 text-red-500 px-4 py-2 rounded-full text-sm font-medium mb-6 backdrop-blur-sm">
+                    <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
                     We Build
                   </div>
 
                   {/* Quote */}
                   <div className="relative mb-8">
-                    <Quote className="absolute -top-4 left-4 h-12 w-12 text-accent/30" />
+                    <Quote className="absolute -top-4 left-4 h-12 w-12 text-red-500/30" />
                     <p className="text-4xl sm:text-6xl   font-bold text-primary-foreground leading-tight lg:pl-8">
                       Build Your Dream Property in Nigeria—From Anywhere in the
                       World
@@ -163,7 +163,7 @@ export function HeroCarousel() {
 
                   {/* Author */}
                   <div className="flex items-center gap-4 lg:pl-8 mb-12">
-                    <div className="w-12 h-12 overflow-hidden relative bgaccent flex items-center justify-center text-accent-foreground font-bold text-lg">
+                    <div className="w-12 h-12 overflow-hidden relative flex items-center justify-center text-accent-foreground font-bold text-lg">
                       <Image
                         src={`https://flagcdn.com/ng.svg`}
                         height={"1000"}
@@ -230,14 +230,14 @@ export function HeroCarousel() {
                   <div key={index} className="h-auto! items-end flex!">
                     <div className="lg:max-w-3xl self-end">
                       {/* Project Tag */}
-                      <div className="inline-flex items-center gap-2 bg-accent/20 text-accent px-4 py-2 rounded-full text-sm font-medium mb-6 backdrop-blur-sm">
-                        <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+                      <div className="inline-flex items-center gap-2 bg-red-500/10 text-red-500 px-4 py-2 rounded-full text-sm font-medium mb-6 backdrop-blur-sm">
+                        <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
                         {testimonial.project}
                       </div>
 
                       {/* Quote */}
                       <div className="relative mb-8">
-                        <Quote className="absolute -top-4 left-4 h-12 w-12 text-accent/30" />
+                        <Quote className="absolute -top-4 left-4 h-12 w-12 text-red-500/30" />
                         <p className="text2xl md:text-2xl text-white sm:leading-[150%] lg:pl-8">
                           {testimonial.quote}
                         </p>
@@ -276,7 +276,7 @@ export function HeroCarousel() {
             <Link href={"/book-service"}>
               <Button
                 size="lg"
-                className="bg-red-500 text-white font-semibold hover:bg-accent/90"
+                className="bg-red-500 text-white font-semibold hover:bg-red-600"
               >
                 Start Your Project
               </Button>

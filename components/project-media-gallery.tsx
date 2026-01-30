@@ -124,7 +124,7 @@ export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
                 style={{ paddingBlock: 20, paddingInline: 12 }}
               >
                 {photos.map((photo) => (
-                  <SwiperSlide className="w-auto! [&.swiper-slide-thumb-active]:opacity-100 opacity-60 border-2 [&.swiper-slide-thumb-active]:border-accent/80 [&.swiper-slide-thumb-active]:shadow-[8px_8px_8px_rgba(0,0,0,0.2)] transition-all duration-500 lg:rounded-xl rounded-lg overflow-hidden">
+                  <SwiperSlide className="w-auto! [&.swiper-slide-thumb-active]:opacity-100 opacity-60 border-2 [&.swiper-slide-thumb-active]:border-red-500/80 [&.swiper-slide-thumb-active]:shadow-[8px_8px_8px_rgba(0,0,0,0.2)] transition-all duration-500 lg:rounded-xl rounded-lg overflow-hidden">
                     <img
                       src={(photo as Record<string, any>).image.url}
                       alt=""
@@ -152,14 +152,14 @@ export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
         <TabsList className="gap-2 bg-transparent  w-auto h-auto">
           <TabsTrigger
             value="photos"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-lg border-2 font-semibold transition-all bg-zinc-100 text-zinc-600 hover:bg-zinc-200 data-[state=active]:bg-accent/10 data-[state=active]:border-accent/50 data-[state=active]:text-accent"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-lg border-2 font-semibold transition-all bg-zinc-100 text-zinc-600 hover:bg-zinc-200 data-[state=active]:bg-red-500/10 data-[state=active]:border-red-500/50 data-[state=active]:text-red-500"
           >
             <Camera className="h-4 w-4" />
             Photos
           </TabsTrigger>
           <TabsTrigger
             value="videos"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold transition-all bg-zinc-100 text-zinc-600 hover:bg-zinc-200 data-[state=active]:bg-accent/10 data-[state=active]:border-accent/50 border-2 data-[state=active]:text-accent"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold transition-all bg-zinc-100 text-zinc-600 hover:bg-zinc-200 data-[state=active]:bg-red-500/10 data-[state=active]:border-red-500/50 border-2 data-[state=active]:text-red-500"
           >
             <Video className="h-4 w-4" />
             Videos
@@ -246,7 +246,7 @@ export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
                 {photos.map((photo, index) => (
                   <SwiperSlide
                     key={index}
-                    className="w-auto! [&.swiper-slide-thumb-active]:opacity-100 opacity-60 border-2 [&.swiper-slide-thumb-active]:border-accent/80 [&.swiper-slide-thumb-active]:shadow-[8px_8px_8px_rgba(0,0,0,0.2)] transition-all duration-500 lg:rounded-xl rounded-lg overflow-hidden relative"
+                    className="w-auto! [&.swiper-slide-thumb-active]:opacity-100 opacity-60 border-2 [&.swiper-slide-thumb-active]:border-red-500/80 [&.swiper-slide-thumb-active]:shadow-[8px_8px_8px_rgba(0,0,0,0.2)] transition-all duration-500 lg:rounded-xl rounded-lg overflow-hidden relative"
                   >
                     <img
                       src={(photo as Record<string, any>).image.url}
@@ -333,7 +333,7 @@ export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
                 {videos.map((video, index) => (
                   <SwiperSlide
                     key={index}
-                    className="w-auto! [&.swiper-slide-thumb-active]:opacity-100 opacity-60 border-2 [&.swiper-slide-thumb-active]:border-accent/80 [&.swiper-slide-thumb-active]:shadow-[8px_8px_8px_rgba(0,0,0,0.2)] transition-all duration-500 lg:rounded-xl rounded-lg overflow-hidden relative"
+                    className="w-auto! [&.swiper-slide-thumb-active]:opacity-100 opacity-60 border-2 [&.swiper-slide-thumb-active]:border-red-500/80 [&.swiper-slide-thumb-active]:shadow-[8px_8px_8px_rgba(0,0,0,0.2)] transition-all duration-500 lg:rounded-xl rounded-lg overflow-hidden relative"
                   >
                     <img
                       src={

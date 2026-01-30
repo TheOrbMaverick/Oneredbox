@@ -88,7 +88,7 @@ export function HeaderContent({ hasSession }: HeaderContentProps) {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "text-base uppercase font-semibold hover:scale-105 transitionall duration-500 ease-in-out transition-colors hover:text-accent hover:underline underline-offset-4",
+                  "text-base uppercase font-semibold hover:scale-105 transitionall duration-500 ease-in-out transition-colors hover:text-red-500 hover:underline underline-offset-4",
                   isScrolled ? "text-white" : "text-primary-foreground",
                 )}
               >
@@ -120,10 +120,10 @@ export function HeaderContent({ hasSession }: HeaderContentProps) {
             {hasSession ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <div className="flex relative items-center border2 gap-1 rounded-lg ">
+                  <div className="flex relative items-center border-2 border-slate-600  gap-1 rounded-full px-1 py-1 ">
                     <Button
                       variant="ghost"
-                      className="relative h-10 w-10 rounded-full p-0 overflow-hidden border-2 border-white/20 hover:border-white/50 transition-colors focus:ring-0"
+                      className="relative h-10 w-10 rounded-full p-0 overflow-hidden border-2 border-red-500/20 hover:border-red-500/50 transition-colors focus:ring-0"
                     >
                       <div className="flex items-center justify-center w-full h-full bg-zinc-800 text-white font-bold">
                         {/* Placeholder Avatar */}
@@ -137,7 +137,7 @@ export function HeaderContent({ hasSession }: HeaderContentProps) {
                       </div>
                     </Button>
                     <div className=" ">
-                      <ChevronDown className="h-5 w-5 text-amber-500" />
+                      <ChevronDown className="h-5 w-5 text-slate-100" />
                     </div>
                   </div>
                 </DropdownMenuTrigger>
@@ -163,7 +163,7 @@ export function HeaderContent({ hasSession }: HeaderContentProps) {
             ) : (
               <Button
                 asChild
-                className="bg-accent rounded-lg text-white hover:bg-accent/90 font-semibold hover:scale-105"
+                className="bg-red-500 rounded-lg text-white hover:bg-red-600 font-semibold hover:scale-105"
               >
                 <Link href="/dashboard">My Dashboard</Link>
               </Button>
@@ -205,7 +205,7 @@ export function HeaderContent({ hasSession }: HeaderContentProps) {
               <>
                 <Button
                   asChild
-                  className="bg-accent text-white hover:bg-red-700 w-full mt-2"
+                  className="bg-red-500 text-white hover:bg-red-700 w-full mt-2"
                 >
                   <Link
                     href="/dashboard"
@@ -228,7 +228,7 @@ export function HeaderContent({ hasSession }: HeaderContentProps) {
             ) : (
               <Button
                 asChild
-                className="bg-accent text-white hover:bg-red-700 w-full mt-2"
+                className="bg-red-500 text-white hover:bg-red-700 w-full mt-2"
               >
                 <Link
                   href="/dashboard"

@@ -458,7 +458,7 @@ export default function DashboardContent({ clientId }: DashboardContentProps) {
                   </p>
                   <Button
                     asChild
-                    className="w-full bg-amber-500 hover:bg-transparent border-2 border-transparent hover:border-amber-500 hovertext-amber-400 font-semibold tracking-wider text-white"
+                    className="w-full bg-red-500 hover:bg-transparent border-2 border-transparent hover:border-red-500 hover:text-red-400 font-semibold tracking-wider text-white"
                   >
                     <Link href="/contact">
                       Get in Touch

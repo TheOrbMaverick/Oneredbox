@@ -102,7 +102,7 @@ export default function ForSalePage() {
                       />
                       <div className="absolute top-4 left-4 flex gap-2">
                         {property.featured && (
-                          <Badge className="bg-accent text-white">
+                          <Badge className="bg-red-500 text-white">
                             Featured
                           </Badge>
                         )}
@@ -114,10 +114,10 @@ export default function ForSalePage() {
                         <MapPin className="h-4 w-4" />
                         <span>{property.location}</span>
                       </div>
-                      <h3 className="font-semibold text-lg mb-2 group-hovertext-accent transition-colors">
+                      <h3 className="font-semibold text-lg mb-2 group-hovertext-red-500 transition-colors">
                         {property.title}
                       </h3>
-                      <p className="text-2xl font-bold text-accent mb-4">
+                      <p className="text-2xl font-bold text-red-500 mb-4">
                         {property.price}
                       </p>
                       <div className="flex items-center gap-4 text-sm text-muted-foreground">

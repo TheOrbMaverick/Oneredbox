@@ -144,7 +144,7 @@ export default async function ProjectDetailPage({
                     strokeDasharray={`${
                       project.completionPercentage * 2.51
                     } 251`}
-                    className="text-accent"
+                    className="text-red-500"
                     strokeLinecap="round"
                   />
                 </svg>
@@ -169,7 +169,7 @@ export default async function ProjectDetailPage({
       <section className="py-8 -mt-6 relative z-10">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card className="border border-accent/10 shadow-lg py-0">
+            <Card className="border border-red-500/10 shadow-lg py-0">
               <CardContent className="p-3 sm:p-5">
                 <div className="flex sm:items-center flex-col sm:flex-row gap-3 mb-3">
                   <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">

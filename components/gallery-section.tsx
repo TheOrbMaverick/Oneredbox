@@ -108,7 +108,7 @@ export function GallerySection() {
       <div className="container mx-auto px-4 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-accent font-semibold text-sm uppercase tracking-[0.2rem] [word-spacing:6px] border shadow-[0px_0px_4px_rgba(0,0,0,0.4)] -2 px-4 py-2 rounded-lg border-accent bg-accent/10">
+          <span className="text-red-500 font-semibold text-sm uppercase tracking-[0.2rem] [word-spacing:6px] border shadow-[0px_0px_12px_rgba(0,0,0,0.1)] -2 px-4 py-2 rounded-lg border-red-500 bg-red-500/10">
             Our Portfolio
           </span>
           <h2 className="text-3xl lg:text-5xl font-bold text-foreground mt-4 mb-6 text-balance">
@@ -127,8 +127,8 @@ export function GallerySection() {
             <div className="flex justify-center items-center py-8 col-span-9">
               <div className="flex flex-col items-center text-center border p-6 rounded-xl gap-3">
                 <CircleAlert />
-                <span>An Error Occured</span>
-                <Button onClick={() => refetch()} className="bg-accent">
+                <span className="text-red-500">An Error Occured</span>
+                <Button onClick={() => refetch()} className="bg-red-500">
                   Retry <RotateCwIcon />
                 </Button>
               </div>
