@@ -1,5 +1,5 @@
-export const USPhone = "+19177645504";
-export const NGPhone = " +2347016639821";
+export const USPhone = "+1 917 764 5504";
+export const NGPhone = "+234 701 663 9821";
 
 export const address = "24 I.T. Igbani Street, Jabi.";
 

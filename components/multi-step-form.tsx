@@ -28,9 +28,10 @@ export interface FieldError {
 interface MultiStepFormProps {
   steps: FormStep[];
   onSubmit: (data: any) => void;
+  canSubmit?: boolean; // Optional prop to control submit button state
 }
 
-export function MultiStepForm({ steps, onSubmit }: MultiStepFormProps) {
+export function MultiStepForm({ steps, onSubmit, canSubmit = true }: MultiStepFormProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
@@ -68,10 +69,16 @@ export function MultiStepForm({ steps, onSubmit }: MultiStepFormProps) {
     if (!isValid) return;
 
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    await onSubmit(data);
-    setIsSubmitting(false);
-    setIsComplete(true);
+    try {
+      await onSubmit(data);
+      // Only set complete if submission succeeded (no error thrown)
+      setIsComplete(true);
+    } catch (error) {
+      console.error("Form submission error:", error);
+      // Don't set isComplete on error - user stays on form
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isComplete) {
@@ -128,7 +135,7 @@ export function MultiStepForm({ steps, onSubmit }: MultiStepFormProps) {
                       index < currentStep &&
                         "bg-primary border-primary text-primary-foreground cursor-pointer",
                       index > currentStep &&
-                        "bg-background border-muted-foreground/30 text-muted-foreground cursor-not-allowed"
+                        "bg-background border-muted-foreground/30 text-muted-foreground cursor-not-allowed",
                     )}
                   >
                     {index < currentStep ? (
@@ -142,7 +149,7 @@ export function MultiStepForm({ steps, onSubmit }: MultiStepFormProps) {
                       "mt-2 text-xs font-medium text-center max-w-20 leading-tight",
                       index === currentStep && "text-primary",
                       index < currentStep && "text-primary",
-                      index > currentStep && "text-muted-foreground"
+                      index > currentStep && "text-muted-foreground",
                     )}
                   >
                     {step.shortTitle || step.title}
@@ -155,7 +162,7 @@ export function MultiStepForm({ steps, onSubmit }: MultiStepFormProps) {
                       "h-0.5 w-12 sm:w-20 lg:w-24 mt-4.5 mx-1",
                       index < currentStep
                         ? "bg-primary"
-                        : "bg-muted-foreground/30"
+                        : "bg-muted-foreground/30",
                     )}
                   />
                 )}
@@ -205,7 +212,7 @@ export function MultiStepForm({ steps, onSubmit }: MultiStepFormProps) {
                 <Button
                   type="submit"
                   className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !canSubmit}
                 >
                   {isSubmitting ? (
                     <>
@@ -263,7 +270,7 @@ export function FormField({
       <label
         className={cn(
           "text-sm font-medium block",
-          errorMessage ? "text-destructive" : "text-foreground"
+          errorMessage ? "text-destructive" : "text-foreground",
         )}
       >
         {label}
@@ -314,7 +321,7 @@ export function RadioGroupField({
           <label
             className={cn(
               "text-sm font-medium block",
-              fieldState.error ? "text-destructive" : "text-foreground"
+              fieldState.error ? "text-destructive" : "text-foreground",
             )}
           >
             {label}
@@ -328,6 +335,7 @@ export function RadioGroupField({
           >
             {options.map((option) => (
               <Label
+                key={`${name}-${option.value}`}
                 htmlFor={`${name}-${option.value}`}
                 className="flex items-center gap-2 cursor-pointer"
               >
@@ -337,7 +345,7 @@ export function RadioGroupField({
                   value={option.value}
                 />
                 <span className="text-sm text-foreground font-normal">
-                  {label}
+                  {option.label}
                 </span>
               </Label>
             ))}
@@ -376,7 +384,7 @@ export function RadioOption({
         <div
           className={cn(
             "w-4 h-4 rounded-full border-2 transition-all",
-            checked ? "border-primary" : "border-muted-foreground/50"
+            checked ? "border-primary" : "border-muted-foreground/50",
           )}
         >
           {checked && (

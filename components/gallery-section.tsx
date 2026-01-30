@@ -8,6 +8,11 @@ import { client } from "@/sanity/lib/client";
 import { Skeleton } from "./ui/skeleton";
 import { urlFor } from "@/sanity/lib/image";
 import { Button } from "./ui/button";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Navigation, Pagination, A11y } from "swiper/modules";
 
 const galleryImages = [
   {
@@ -71,15 +76,26 @@ const galleryImages = [
 // const imageGridMap = {tall: ""}
 
 export function GallerySection() {
-  const [selectedImage, setSelectedImage] = useState<Record<
+  const [selectedSection, setSelectedSection] = useState<Record<
     string,
     any
   > | null>(null);
+
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["portfolio-gallery"],
     queryFn: async () => {
       try {
-        const res = await client.fetch(`*[_type=="portfolioGallery"]`);
+        const res = await client.fetch(
+          `*[_type=="portfolioGallery"]{
+            _id,
+            category,
+            size,
+            images[]{
+              title,
+              "image": img
+            }
+          }`,
+        );
         return res;
       } catch (error) {
         throw error;
@@ -126,72 +142,87 @@ export function GallerySection() {
               />
             ))}
           {data &&
-            data.map((image: any) => (
-              <div
-                key={image._id}
-                onClick={() => setSelectedImage(image)}
-                className={cn(
-                  "relative group cursor-pointer max-h-[200px] col-span-2 md:row-span-2 sm:max-h-full rounded-lg overflow-hidden",
-                  image.size === "large" && "col-span-2 row-span-2",
-                  image.size === "tall" && "row-span-2 col-span-2",
-                  image.size === "medium" && "col-span-2 row-span-2",
-                )}
-              >
-                <img
-                  src={
-                    image.image ? urlFor(image.image).url() : "/placeholder.svg"
-                  }
-                  alt={image.image.altText}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/60 transition-all duration-300 flex items-center justify-center">
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center">
-                    <ZoomIn className="h-8 w-8 text-primary-foreground mx-auto mb-2" />
-                    <p className="text-primary-foreground font-semibold">
-                      {image.image.altText}
-                    </p>
-                    <span className="text-primary-foreground/70 text-sm">
-                      {image.category}
-                    </span>
+            data.map((section: any) => {
+              // Use the first image as the cover
+              const coverImage = section.images?.[0]?.image;
+              if (!coverImage) return null;
+
+              return (
+                <div
+                  key={section._id}
+                  onClick={() => setSelectedSection(section)}
+                  className={cn(
+                    "relative group cursor-pointer max-h-[200px] col-span-2 md:row-span-2 sm:max-h-full rounded-lg overflow-hidden",
+                  )}
+                >
+                  <img
+                    src={urlFor(coverImage).url()}
+                    alt={section.category}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  {/* Overlay */}
+                  <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/60 transition-all duration-300 flex items-center justify-center">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center">
+                      <ZoomIn className="h-8 w-8 text-primary-foreground mx-auto mb-2" />
+                      <p className="text-primary-foreground font-semibold">
+                        {section.category}
+                      </p>
+                      <span className="text-primary-foreground/70 text-sm">
+                        {section.images?.length || 0} Photos
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
         </div>
       </div>
 
-      {/* Lightbox */}
-      {selectedImage && (
+      {/* Lightbox / Carousel Modal */}
+      {selectedSection && (
         <div
-          className="fixed inset-0 bg-primary/90 z-50 flex items-center justify-center p-4"
-          onClick={() => setSelectedImage(null)}
+          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 animate-in fade-in duration-300"
+          onClick={() => setSelectedSection(null)}
         >
           <button
-            className="absolute top-4 right-4 p-2 text-primary-foreground hover:text-accent transition-colors"
-            onClick={() => setSelectedImage(null)}
+            className="absolute top-4 right-4 p-2 text-white/70 hover:text-white transition-colors z-50"
+            onClick={() => setSelectedSection(null)}
           >
             <X className="h-8 w-8" />
           </button>
+
           <div
-            className="max-w-5xl w-full"
+            className="w-full max-w-6xl h-[80vh]"
             onClick={(e) => e.stopPropagation()}
           >
-            <img
-              src={
-                selectedImage.image
-                  ? urlFor(selectedImage.image).url()
-                  : "/placeholder.svg"
-              }
-              alt={selectedImage.image.altText}
-              className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
-            />
-            <div className="mt-4 text-center">
-              <p className="text-primary-foreground text-xl font-semibold">
-                {selectedImage.image.altText}
-              </p>
-              <span className="text-accent">{selectedImage.category}</span>
-            </div>
+            <Swiper
+              modules={[Navigation, Pagination, A11y]}
+              navigation
+              pagination={{ clickable: true }}
+              className="w-full h-full rounded-lg"
+              spaceBetween={30}
+              slidesPerView={1}
+            >
+              {selectedSection.images?.map((imgItem: any, idx: number) => (
+                <SwiperSlide
+                  key={idx}
+                  className="flex items-center justify-center bg-black"
+                >
+                  <div className="relative w-full h-full flex items-center justify-center">
+                    <img
+                      src={urlFor(imgItem.image).url()}
+                      alt={imgItem.title || selectedSection.category}
+                      className="max-w-full max-h-full object-contain"
+                    />
+                    {imgItem.title && (
+                      <div className="absolute bottom-4 left-0 right-0 text-center text-white bg-black/50 py-2">
+                        <p className="text-lg font-medium">{imgItem.title}</p>
+                      </div>
+                    )}
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
         </div>
       )}

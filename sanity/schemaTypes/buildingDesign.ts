@@ -270,5 +270,26 @@ export const buildingDesign = defineType({
       title: "Additional Notes",
       type: "text",
     }),
+    defineField({
+      name: "referralSource",
+      title: "How did you hear about us?",
+      type: "string",
+      options: {
+        list: [
+          { title: "Social Media (Facebook, Instagram, Twitter)", value: "social-media" },
+          { title: "Google Search", value: "google-search" },
+          { title: "Friend/Family Referral", value: "friend-referral" },
+          { title: "Previous Client", value: "previous-client" },
+          { title: "Advertisement", value: "advertisement" },
+          { title: "Other", value: "other" },
+        ],
+      },
+    }),
+    defineField({
+      name: "optInVideoUpdates",
+      title: "Opt in for Live Site Video Updates",
+      type: "boolean",
+      initialValue: false,
+    }),
   ],
 });

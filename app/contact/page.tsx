@@ -2,75 +2,146 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  MapPin,
-  Phone,
-  Mail,
-  Clock,
-  Send,
-  Check,
-  MessageSquare,
-  Globe,
   MailIcon,
   PhoneIcon,
   MapPinIcon,
+  Loader2,
+  CheckCircle2,
 } from "lucide-react";
 import { Footer } from "@/components/footer";
+import { address, NGPhone, USPhone } from "@/constants/info";
+import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import emailjs from "@emailjs/browser";
+import ReCAPTCHA from "react-google-recaptcha";
 
-const offices = [
-  {
-    country: "United States",
-    address: "123 Business Ave, Suite 400",
-    city: "Houston, TX 77001",
-    phone: "+1 (555) 123-4567",
-    email: "us@oneredbox.com",
-    hours: "Mon-Fri: 9AM - 6PM CST",
-  },
-  {
-    country: "Nigeria",
-    address: "15 Victoria Island",
-    city: "Lagos, Nigeria",
-    phone: "+234 (1) 234-5678",
-    email: "ng@oneredbox.com",
-    hours: "Mon-Fri: 9AM - 5PM WAT",
-  },
-];
+// Form validation schema
+const contactFormSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email address"),
+  message: z.string().min(10, "Message must be at least 10 characters"),
+});
 
-const contactReasons = [
-  "General Inquiry",
-  "Land Acquisition",
-  "Building Design",
-  "Construction Supervision",
-  "Partnership Opportunity",
-  "Media/Press",
-  "Other",
-];
+type ContactFormData = z.infer<typeof contactFormSchema>;
 
 export default function ContactPage() {
-  const [formSubmitted, setFormSubmitted] = useState(false);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormSubmitted(true);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactFormSchema),
+  });
+
+  const handleRecaptchaChange = async (token: string | null) => {
+    if (!token) {
+      setRecaptchaToken(null);
+      setIsVerified(false);
+      return;
+    }
+
+    setRecaptchaToken(token);
+    setIsVerifying(true);
+
+    try {
+      const verifyResponse = await fetch("/api/verify-recaptcha", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token }),
+      });
+
+      const verifyData = await verifyResponse.json();
+
+      if (verifyData.success) {
+        setIsVerified(true);
+      } else {
+        setIsVerified(false);
+        setRecaptchaToken(null);
+        alert("reCAPTCHA verification failed. Please try again.");
+        recaptchaRef.current?.reset();
+      }
+    } catch (error) {
+      console.error("Error verifying reCAPTCHA:", error);
+      setIsVerified(false);
+      setRecaptchaToken(null);
+      alert("Error verifying reCAPTCHA. Please try again.");
+      recaptchaRef.current?.reset();
+    } finally {
+      setIsVerifying(false);
+    }
+  };
+
+  const onSubmit = async (data: ContactFormData) => {
+    if (!isVerified) {
+      alert("Please complete and verify the reCAPTCHA");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      // EmailJS configuration
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "";
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "";
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "";
+
+      if (!serviceId || !templateId || !publicKey) {
+        throw new Error("EmailJS configuration is missing");
+      }
+
+      // Send email using EmailJS
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          name: data.name,
+          email: data.email,
+          message: data.message,
+        },
+        publicKey
+      );
+
+      setSubmitSuccess(true);
+      reset();
+      // Reset reCAPTCHA
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
+      setIsVerified(false);
+
+      // Reset success message after 5 seconds
+      setTimeout(() => {
+        setSubmitSuccess(false);
+      }, 5000);
+    } catch (error) {
+      console.error("Error sending email:", error);
+      setSubmitError("Failed to send message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <main className="min-h-screen bg-background">
-      {/* <InnerPageHeader /> */}
-
       {/* Hero Section */}
       <section className="pt-24 pb-16 lg:pt-32 lg:pb-20 bg-zinc-900 text-white">
         <div className="container mx-auto px-4 lg:px-8">
@@ -102,9 +173,7 @@ export default function ContactPage() {
                     Reach Out to Us
                   </p>
                   <p className="font-medium">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Consectetur consequatur, distinctio maxime id impedit
-                    veritatis?
+                    We're here to help bring your vision to life. Whether you need land acquisition, building design, or construction supervision, our team is ready to assist you every step of the way.
                   </p>
                 </div>
               </div>
@@ -125,7 +194,12 @@ export default function ContactPage() {
                   </div>
                   <div className="">
                     <p className="font-medium">Phone Number</p>
-                    <p className="text-md font-semibold">+1 234 5555 434</p>
+                    <div className="flex gap-4">
+                      <p className="text-md font-semibold">
+                        <Link href={`tel:${NGPhone}`}>{NGPhone}</Link>
+                      </p>
+                      <p className="text-md font-semibold">{USPhone}</p>
+                    </div>
                   </div>
                 </div>
 
@@ -135,47 +209,129 @@ export default function ContactPage() {
                   </div>
                   <div className="">
                     <p className="font-medium">Our Office</p>
-                    <p className="text-md font-semibold">+1 234 5555 434</p>
+                    <p className="text-md font-semibold">{address}</p>
                   </div>
                 </div>
               </div>
 
-              <div className="col-start-1 md:col-start-6 row-start-2 md:row-start-1 row-end-3 w-full col-end-3 md:col-end-13 [&_label]:text-md [&_input]:text-primary [&_textarea]:text-primary [&_label]:text-primary [&_label]:font-semibold py-8 px-4 md:px-8 bordr bg-white shadow-md rounded-3xl flex flex-col gap-6">
-                <div className="flex flex-col md:flex-row gap-6 ">
-                  <div className="grid w-full max-w-sm items-center gap-3">
-                    <Label htmlFor="firstName">First Name</Label>
-                    <Input
-                      id="firstName"
-                      type="text"
-                      placeholder="First name"
-                    />
+              <div className="col-start-1 md:col-start-6 row-start-2 md:row-start-1 row-end-3 w-full col-end-3 md:col-end-13 [&_label]:text-md [&_input]:text-primary [&_textarea]:text-primary [&_label]:text-primary [&_label]:font-semibold py-8 px-4 md:px-8 bordr bg-white shadow-md rounded-3xl flex flex-col justify-center gap-6">
+                {submitSuccess ? (
+                  <div className="flex flex-col items-center justify-center py-12 text-center">
+                    <CheckCircle2 className="w-16 h-16 text-green-600 mb-4" />
+                    <h3 className="text-2xl font-bold text-primary mb-2">
+                      Message Sent Successfully!
+                    </h3>
+                    <p className="text-gray-600">
+                      Thank you for reaching out. We'll get back to you soon.
+                    </p>
                   </div>
-                  <div className="grid w-full max-w-sm items-center gap-3">
-                    <Label htmlFor="lastName">Last Name</Label>
-                    <Input id="lastName" type="text" placeholder="Last name" />
-                  </div>
-                </div>
-                <div className="grid w-full max-wmd items-center gap-3">
-                  <Label htmlFor="firstName">Email Address</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="Enter you email address"
-                  />
-                </div>
+                ) : (
+                  <form onSubmit={handleSubmit(onSubmit)} className="flex flex-1 flex-col gap-6">
+                    <div className="flex flex-col md:flex-row gap-6 ">
+                      <div className="grid w-full max-wsm items-center gap-3">
+                        <Label htmlFor="name">Name *</Label>
+                        <Input
+                          id="name"
+                          type="text"
+                          placeholder="Enter your name"
+                          {...register("name")}
+                          className={errors.name ? "border-red-500" : ""}
+                        />
+                        {errors.name && (
+                          <p className="text-sm text-red-500">
+                            {errors.name.message}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="grid w-full max-wmd items-center gap-3">
+                      <Label htmlFor="email">Email Address *</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="Enter your email address"
+                        {...register("email")}
+                        className={errors.email ? "border-red-500" : ""}
+                      />
+                      {errors.email && (
+                        <p className="text-sm text-red-500">
+                          {errors.email.message}
+                        </p>
+                      )}
+                    </div>
 
-                <div className="w-full flex flex-col max-wsm flex-1 itemscenter gap-3">
-                  <Label htmlFor="message">Message</Label>
-                  <Textarea
-                    id="message"
-                    placeholder="Enter your message here..."
-                    className="flex-1 bg-white/10 bordernone max-h-[250px] rounded-xl shadow-md"
-                  />
-                </div>
+                    <div className="w-full flex flex-col max-wsm flex-1 itemscenter gap-3">
+                      <Label htmlFor="message">Message *</Label>
+                      <Textarea
+                        id="message"
+                        placeholder="Enter your message here..."
+                        className={`flex-1 bg-white/10 bordernone max-h-[250px] min-h-[150px] rounded-xl shadow-md ${
+                          errors.message ? "border-red-500" : ""
+                        }`}
+                        {...register("message")}
+                      />
+                      {errors.message && (
+                        <p className="text-sm text-red-500">
+                          {errors.message.message}
+                        </p>
+                      )}
+                    </div>
 
-                <Button className="bgwhite textprimary bg-primary hover:bg-primary/80 font-semibold text-lg text-white py-6 cursor-pointer">
-                  Submit
-                </Button>
+                    <div className="space-y-2">
+                      {/* <Label className="text-sm font-medium text-primary">
+                        Security Verification *
+                      </Label> */}
+                      <ReCAPTCHA
+                        ref={recaptchaRef}
+                        sitekey={
+                          process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ||
+                          ""
+                        }
+                        onChange={handleRecaptchaChange}
+                        onExpired={() => {
+                          setRecaptchaToken(null);
+                          setIsVerified(false);
+                        }}
+                      />
+                      {isVerifying && (
+                        <p className="text-sm text-blue-600">
+                          Verifying reCAPTCHA...
+                        </p>
+                      )}
+                      {!isVerified && !isVerifying && (
+                        <p className="text-sm text-gray-600">
+                          Please complete the reCAPTCHA to submit the form
+                        </p>
+                      )}
+                      {isVerified && (
+                        <p className="text-sm text-green-600">
+                          ✓ Verified successfully
+                        </p>
+                      )}
+                    </div>
+
+                    {submitError && (
+                      <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                        {submitError}
+                      </div>
+                    )}
+
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting || !isVerified}
+                      className="bgwhite textprimary mt-auto bg-primary hover:bg-primary/80 font-semibold text-lg text-white py-6 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                          Sending...
+                        </>
+                      ) : (
+                        "Submit"
+                      )}
+                    </Button>
+                  </form>
+                )}
               </div>
             </div>
           </div>
@@ -183,161 +339,6 @@ export default function ContactPage() {
       </section>
 
       <Footer />
-      {/* <section className="py-16 lg:py-24">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
-            
-            <div>
-              <h2 className="text-2xl font-bold mb-6">Send Us a Message</h2>
-              <Card>
-                <CardContent className="pt-6">
-                  {formSubmitted ? (
-                    <div className="text-center py-8">
-                      <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Check className="h-8 w-8 text-green-600" />
-                      </div>
-                      <h3 className="text-xl font-semibold mb-2">Message Sent!</h3>
-                      <p className="text-muted-foreground mb-6">
-                        Thank you for reaching out. We'll respond within 24-48 hours.
-                      </p>
-                      <Button variant="outline" onClick={() => setFormSubmitted(false)}>
-                        Send Another Message
-                      </Button>
-                    </div>
-                  ) : (
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      <div className="grid sm:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="name">Full Name</Label>
-                          <Input id="name" placeholder="John Doe" required />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="email">Email Address</Label>
-                          <Input id="email" type="email" placeholder="john@example.com" required />
-                        </div>
-                      </div>
-
-                      <div className="grid sm:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="phone">Phone Number</Label>
-                          <Input id="phone" type="tel" placeholder="+1 (555) 000-0000" />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="reason">Reason for Contact</Label>
-                          <Select>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select a reason" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {contactReasons.map((reason) => (
-                                <SelectItem key={reason} value={reason.toLowerCase().replace(/\s/g, "-")}>
-                                  {reason}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="subject">Subject</Label>
-                        <Input id="subject" placeholder="How can we help?" required />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="message">Message</Label>
-                        <Textarea id="message" placeholder="Tell us more about your inquiry..." rows={5} required />
-                      </div>
-
-                      <Button type="submit" className="w-full bg-red-600 hover:bg-red-700 text-white">
-                        <Send className="mr-2 h-4 w-4" />
-                        Send Message
-                      </Button>
-                    </form>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
-
-            <div>
-              <h2 className="text-2xl font-bold mb-6">Our Offices</h2>
-              <div className="space-y-6">
-                {offices.map((office) => (
-                  <Card key={office.country}>
-                    <CardHeader>
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-red-600/10 flex items-center justify-center">
-                          <Globe className="h-5 w-5 text-red-600" />
-                        </div>
-                        <CardTitle className="text-lg">{office.country}</CardTitle>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex items-start gap-3">
-                        <MapPin className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
-                        <div>
-                          <p>{office.address}</p>
-                          <p>{office.city}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <Phone className="h-5 w-5 text-muted-foreground shrink-0" />
-                        <p>{office.phone}</p>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <Mail className="h-5 w-5 text-muted-foreground shrink-0" />
-                        <p>{office.email}</p>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <Clock className="h-5 w-5 text-muted-foreground shrink-0" />
-                        <p>{office.hours}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              <div className="mt-8">
-                <h3 className="text-lg font-semibold mb-4">Quick Contact</h3>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <Card className="bg-zinc-50 dark:bg-zinc-900 border-none">
-                    <CardContent className="flex items-center gap-4 p-4">
-                      <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                        <MessageSquare className="h-6 w-6 text-green-600" />
-                      </div>
-                      <div>
-                        <p className="font-medium">WhatsApp</p>
-                        <p className="text-sm text-muted-foreground">Chat with us directly</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  <Card className="bg-zinc-50 dark:bg-zinc-900 border-none">
-                    <CardContent className="flex items-center gap-4 p-4">
-                      <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                        <Mail className="h-6 w-6 text-blue-600" />
-                      </div>
-                      <div>
-                        <p className="font-medium">Email Support</p>
-                        <p className="text-sm text-muted-foreground">Response within 24hrs</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
-
-      {/* Map Section Placeholder */}
-      {/* <section className="h-80 bg-zinc-200 dark:bg-zinc-800 relative">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center">
-            <MapPin className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground">Interactive Map</p>
-          </div>
-        </div>
-      </section> */}
     </main>
   );
 }

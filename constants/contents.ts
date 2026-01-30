@@ -9,6 +9,7 @@ import {
   Ruler,
   Shield,
   Users,
+  Video,
   Wrench,
 } from "lucide-react";
 
@@ -133,5 +134,11 @@ export const bookServicesTrustPoints = [
     icon: Users,
     title: "Trusted Partners",
     description: "Vetted network of lawyers, surveyors, and contractors",
+  },
+  {
+    icon: Video,
+    title: "Live Site Video Updates",
+    description:
+      "Live camera feed of ongoing site work and progress is available for clients who want to be more comfortable",
   },
 ];

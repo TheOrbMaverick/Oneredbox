@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "createdAt": "2026-01-21T20:26:02.338Z",
+  "createdAt": "2026-01-26T01:05:20.170Z",
   "workspaces": [
     {
       "name": "default",
@@ -13,7 +13,7 @@
         "enabled": false
       },
       "schema": "6284d34f.create-schema.json",
-      "tools": "d8640c31.create-tools.json"
+      "tools": "ba47da56.create-tools.json"
     }
   ],
   "studioVersion": "4.22.0"
