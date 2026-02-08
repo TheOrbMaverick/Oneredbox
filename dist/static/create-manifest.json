@@ -1,19 +1,19 @@
 {
   "version": 3,
-  "createdAt": "2026-01-26T01:05:20.170Z",
+  "createdAt": "2026-02-08T10:36:34.010Z",
   "workspaces": [
     {
       "name": "default",
       "title": "Default",
       "basePath": "/studio",
-      "projectId": "l6ja2b4s",
+      "projectId": "06wdodaa",
       "dataset": "production",
       "icon": null,
       "mediaLibrary": {
         "enabled": false
       },
-      "schema": "6284d34f.create-schema.json",
-      "tools": "ba47da56.create-tools.json"
+      "schema": "5aa077d7.create-schema.json",
+      "tools": "d8640c31.create-tools.json"
     }
   ],
   "studioVersion": "4.22.0"

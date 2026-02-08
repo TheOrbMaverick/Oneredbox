@@ -92,7 +92,9 @@ export function GallerySection() {
             size,
             images[]{
               title,
-              "image": img
+              "image": img,
+              "videoUrl": video.asset->url,
+              "isVideo": defined(video)
             }
           }`,
         );
@@ -143,9 +145,13 @@ export function GallerySection() {
             ))}
           {data &&
             data.map((section: any) => {
-              // Use the first image as the cover
+              // Use the first image as the cover (first item is always an image per validation)
               const coverImage = section.images?.[0]?.image;
               if (!coverImage) return null;
+
+              // Count images and videos
+              const imageCount = section.images?.filter((item: any) => !item.isVideo).length || 0;
+              const videoCount = section.images?.filter((item: any) => item.isVideo).length || 0;
 
               return (
                 <div
@@ -168,7 +174,8 @@ export function GallerySection() {
                         {section.category}
                       </p>
                       <span className="text-primary-foreground/70 text-sm">
-                        {section.images?.length || 0} Photos
+                        {imageCount} Photo{imageCount !== 1 ? 's' : ''}
+                        {videoCount > 0 && ` • ${videoCount} Video${videoCount !== 1 ? 's' : ''}`}
                       </span>
                     </div>
                   </div>
@@ -203,20 +210,31 @@ export function GallerySection() {
               spaceBetween={30}
               slidesPerView={1}
             >
-              {selectedSection.images?.map((imgItem: any, idx: number) => (
+              {selectedSection.images?.map((mediaItem: any, idx: number) => (
                 <SwiperSlide
                   key={idx}
                   className="flex items-center justify-center bg-black"
                 >
                   <div className="relative w-full h-full flex items-center justify-center">
-                    <img
-                      src={urlFor(imgItem.image).url()}
-                      alt={imgItem.title || selectedSection.category}
-                      className="max-w-full max-h-full object-contain"
-                    />
-                    {imgItem.title && (
+                    {mediaItem.isVideo ? (
+                      <video
+                        src={mediaItem.videoUrl}
+                        controls
+                        className="max-w-full max-h-full object-contain"
+                        preload="metadata"
+                      >
+                        Your browser does not support the video tag.
+                      </video>
+                    ) : (
+                      <img
+                        src={urlFor(mediaItem.image).url()}
+                        alt={mediaItem.title || selectedSection.category}
+                        className="max-w-full max-h-full object-contain"
+                      />
+                    )}
+                    {mediaItem.title && (
                       <div className="absolute bottom-4 left-0 right-0 text-center text-white bg-black/50 py-2">
-                        <p className="text-lg font-medium">{imgItem.title}</p>
+                        <p className="text-lg font-medium">{mediaItem.title}</p>
                       </div>
                     )}
                   </div>
@@ -229,3 +247,4 @@ export function GallerySection() {
     </section>
   );
 }
+
