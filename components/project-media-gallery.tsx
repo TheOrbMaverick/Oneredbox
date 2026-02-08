@@ -312,7 +312,7 @@ export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
                       src={(video as Record<string, any>).video.url}
                       // poster={vid.thumbnail}
                       controls
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                     >
                       Your browser does not support the video tag.
                     </video>
