@@ -35,7 +35,7 @@ export interface TestimonialType {
 }
 
 export function HeroCarousel() {
-  const [controlledSwiper, setControlledSwiper] = useState<any>(null);
+  // const [controlledSwiper, setControlledSwiper] = useState<any>(null);
   const swiperRef = useRef<SwiperRef>(null);
   const videosRef = useRef<HTMLVideoElement[]>([]);
   const { data, isLoading, error } = useQuery({
@@ -101,7 +101,7 @@ export function HeroCarousel() {
           className="h-dvh! relative [&_.swiper-pagination-bullet]:bg-slate-300! [&_.swiper-pagination-bullet-active]:w-4! [&_.swiper-pagination-bullet-active]:rounded-full!"
           modules={[Navigation, EffectFade, Controller, Pagination, Autoplay]}
           pagination={{ enabled: true }}
-          controller={{ control: controlledSwiper }}
+          // controller={{ control: controlledSwiper }}
           // effect="fade"
           navigation={{
             enabled: true,
@@ -110,7 +110,9 @@ export function HeroCarousel() {
           }}
           autoplay={{
             delay: 5000,
-            disableOnInteraction: false,
+            disableOnInteraction: true,
+            pauseOnMouseEnter: true,
+
           }}
         >
           <SwiperSlide style={{ height: "100dvh" }} className=" h-dvh relative">
@@ -271,7 +273,7 @@ export function HeroCarousel() {
             ))}
         </Swiper>
 
-        <div className="absolute left-4 bottom-18 sm:bottom-24 sm:left-18 z-10">
+        <div className="absolute left-4 bottom-18 smbottom-24 sm:bottom-[15%] sm:left-18 z-10">
           <div className="flex gap-3 flex-col sm:flex-row">
             <Link href={"/book-service"}>
               <Button
