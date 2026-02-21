@@ -39,7 +39,7 @@ export default async function DemoProjectDetailPage({
   const { id } = await params;
 
   const project = await client.fetch(
-    `*[_type=="demoProject" && _id == "${id}"][0]{...,"projectManager":projectManager->,"media":media[]{...,"image":image.asset->,"thumbnail":thumbnail.asset->,"video":video.asset->}}`,
+    `*[_type=="demoProject" && _id == "${id}"][0]{...,"projectManager":projectManager->,"cameraFeedLink":cameraFeedLink,"media":media[]{...,"image":image.asset->,"thumbnail":thumbnail.asset->,"video":video.asset->}}`,
     { id },
   );
 
@@ -404,6 +404,42 @@ export default async function DemoProjectDetailPage({
                           </p>
                         </div>
                       </div>
+                    </div>
+                  </div>
+
+                  {/* Camera Feed Link */}
+                  <div>
+                    <h4 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide mb-3">
+                      Live Camera Feed
+                    </h4>
+                    <div className="flex items-center gap-3 bg-zinc-50 rounded-xl p-4">
+                      {project.cameraFeedLink ? (
+                        <>
+                          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-red-100/50">
+                            <span className="relative flex h-3 w-3">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                              <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                            </span>
+                          </div>
+                          <div>
+                            <p className="font-medium">Live Stream Available</p>
+                            <a
+                              href={project.cameraFeedLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm text-blue-600 hover:text-blue-700 hover:underline flex items-center gap-1"
+                            >
+                              View Camera Feed
+                              <ArrowLeft className="h-3 w-3 rotate-[135deg]" />
+                            </a>
+                          </div>
+                        </>
+                      ) : (
+                        <div>
+                          <p className="font-medium text-muted-foreground">N/A</p>
+                          <p className="text-sm text-muted-foreground">No camera feed available for this project</p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </CardContent>

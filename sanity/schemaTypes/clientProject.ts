@@ -275,6 +275,11 @@ export const clientProject = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "cameraFeedLink",
+      title: "Camera Feed Link",
+      type: "url",
+    }),
+    defineField({
       name: "specifications",
       title: "Specifications",
       type: "object",
