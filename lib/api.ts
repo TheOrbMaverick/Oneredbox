@@ -21,3 +21,14 @@ export async function fetchClientProjects(
 
   return result;
 }
+
+export async function fetchDemoProjects(): Promise<ClientProjectsResponse> {
+  const projects = await client.fetch(
+    `*[_type=="demoProject"]|order(_createdAt desc)`
+  );
+
+  return {
+    clientName: "Demo User",
+    projects: projects || [],
+  };
+}

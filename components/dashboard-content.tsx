@@ -30,7 +30,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { formatCurrency, formatDate } from "@/lib/client-projects-data";
 import { urlFor } from "@/sanity/lib/image";
-import { fetchClientProjects } from "@/lib/api";
+import { fetchClientProjects, fetchDemoProjects } from "@/lib/api";
 
 const serviceTypeLabels = {
   "land-acquisition": {
@@ -76,18 +76,20 @@ export type ServiceType =
 export type StatusType = "completed" | "in-progress" | "on-hold";
 
 interface DashboardContentProps {
-  clientId: string;
+  clientId?: string;
+  isDemo?: boolean;
+  basePath?: string;
 }
 
-export default function DashboardContent({ clientId }: DashboardContentProps) {
+export default function DashboardContent({ clientId, isDemo, basePath = "/dashboard" }: DashboardContentProps) {
   const {
     data: projectsRes,
     isLoading,
     isError,
     error,
   } = useQuery({
-    queryKey: ["clientProjects", clientId],
-    queryFn: () => fetchClientProjects(clientId),
+    queryKey: isDemo ? ["demoProjects"] : ["clientProjects", clientId],
+    queryFn: () => isDemo ? fetchDemoProjects() : fetchClientProjects(clientId!),
     retry: 1,
   });
 
@@ -163,7 +165,7 @@ export default function DashboardContent({ clientId }: DashboardContentProps) {
                   asChild
                   className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white"
                 >
-                  <a href="/dashboard">
+                  <a href={basePath}>
                     <RefreshCw className="w-4 h-4 mr-2" />
                     Refresh
                   </a>
@@ -358,7 +360,7 @@ export default function DashboardContent({ clientId }: DashboardContentProps) {
                 {activeProjects.length > 0 ? (
                   <div className="space-y-4">
                     {activeProjects.map((project: Record<string, any>) => (
-                      <ActiveProjectCard project={project} key={project._id} />
+                      <ActiveProjectCard project={project} key={project._id} basePath={basePath} />
                     ))}
                   </div>
                 ) : (
@@ -400,6 +402,7 @@ export default function DashboardContent({ clientId }: DashboardContentProps) {
                       <CompletedProjectCard
                         project={project}
                         key={project._id}
+                        basePath={basePath}
                       />
                     ))}
                   </div>
@@ -475,13 +478,13 @@ export default function DashboardContent({ clientId }: DashboardContentProps) {
   );
 }
 
-function CompletedProjectCard({ project }: { project: Record<string, any> }) {
+function CompletedProjectCard({ project, basePath = "/dashboard" }: { project: Record<string, any>, basePath?: string }) {
   const ServiceIcon =
     serviceTypeLabels[project.serviceType as ServiceType].icon;
 
   return (
     <Link
-      href={`/dashboard/projects/${project._id}`}
+      href={`${basePath}/projects/${project._id}`}
       className="cursor-pointer"
     >
       <Card
@@ -525,7 +528,7 @@ function CompletedProjectCard({ project }: { project: Record<string, any> }) {
   );
 }
 
-function ActiveProjectCard({ project }: { project: Record<string, any> }) {
+function ActiveProjectCard({ project, basePath = "/dashboard" }: { project: Record<string, any>, basePath?: string }) {
   const ServiceIcon =
     serviceTypeLabels[project.serviceType as ServiceType].icon;
   const StatusIcon = statusConfig[project.status as StatusType].icon;
@@ -612,7 +615,7 @@ function ActiveProjectCard({ project }: { project: Record<string, any> }) {
                 variant="ghost"
                 className="text-red-600 hover:text-red-700 hover:bg-red-50"
               >
-                <Link href={`/dashboard/projects/${project._id}`}>
+                <Link href={`${basePath}/projects/${project._id}`}>
                   View Details
                   <ChevronRight className="h-4 w-4 ml-1" />
                 </Link>

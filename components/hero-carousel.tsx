@@ -282,7 +282,7 @@ export function HeroCarousel() {
               </Button>
             </Link>
             <Link
-              href={"/dashboard/projects/8c4e7ca8-fcee-4395-bcbe-e9cad8c054f0"}
+              href={"/demo-dashboard"}
             >
               <Button
                 size="lg"
