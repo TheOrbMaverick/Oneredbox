@@ -114,13 +114,8 @@ export const demoProject = defineType({
     defineField({
       name: "projectManager",
       title: "Project Manager",
-      type: "object",
-      fields: [
-        defineField({ name: "name", type: "string", title: "Name" }),
-        defineField({ name: "phone", type: "string", title: "Phone" }),
-        defineField({ name: "email", type: "string", title: "Email" }),
-        defineField({ name: "image", type: "image", title: "Image" }),
-      ],
+      type: "reference",
+      to: [{ type: "projectManager" }],
       validation: (rule) => rule.required(),
     }),
     defineField({

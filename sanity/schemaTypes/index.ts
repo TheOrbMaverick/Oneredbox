@@ -14,6 +14,7 @@ import { ClientType } from "./clientType";
 import { portfolioGalleryType } from "./portfolioGallery";
 import { sectionTestimonial } from "./testimonials";
 import { demoProject } from "./demoProject";
+import { projectManager } from "./projectManager";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -30,5 +31,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     portfolioGalleryType,
     sectionTestimonial,
     demoProject,
+    projectManager,
   ],
 };

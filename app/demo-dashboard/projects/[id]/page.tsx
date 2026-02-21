@@ -39,7 +39,7 @@ export default async function DemoProjectDetailPage({
   const { id } = await params;
 
   const project = await client.fetch(
-    `*[_type=="demoProject" && _id == "${id}"][0]{...,"media":media[]{...,"image":image.asset->,"thumbnail":thumbnail.asset->,"video":video.asset->}}`,
+    `*[_type=="demoProject" && _id == "${id}"][0]{...,"projectManager":projectManager->,"media":media[]{...,"image":image.asset->,"thumbnail":thumbnail.asset->,"video":video.asset->}}`,
     { id },
   );
 
