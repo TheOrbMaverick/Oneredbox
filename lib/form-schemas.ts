@@ -179,6 +179,7 @@ export const constructionSupervisionStep1Schema = z.object({
     required_error: "Please indicate if you are the owner or representative",
   }),
   contractorName: z.string().optional(),
+  wantOneredboxContractor: z.boolean().optional(),
   date: z
     .string()
     .min(1, { message: "Select a date for the consultation meet" }),
@@ -201,7 +202,7 @@ export const constructionSupervisionStep3Schema = z.object({
 });
 
 export const constructionSupervisionStep4Schema = z.object({
-  supervisionLevel: z.string().min(1, "Please select a supervision level"),
+  supervisionLevel: z.string().optional(),
   photoReporting: z.enum(["yes", "no"]).optional(),
   materialVerification: z.enum(["yes", "no"]).optional(),
   stageApproval: z.enum(["yes", "no"]).optional(),

@@ -28,7 +28,7 @@ import {
   constructionSupervisionStep6Schema,
 } from "@/lib/form-schemas";
 import { FormInput } from "@/components/ui/form-input";
-import { useForm, FormProvider, Controller } from "react-hook-form";
+import { useForm, FormProvider, Controller, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -105,8 +105,11 @@ export default function ConstructionSupervisionPage() {
     }
   };
 
+  const wantOneredbox = useWatch({ control, name: "wantOneredboxContractor" });
+
   const steps: FormStep[] = useMemo(
-    () => [
+    () => {
+      const allSteps = [
       {
         id: "client-info",
         title: "Client Information",
@@ -156,6 +159,34 @@ export default function ConstructionSupervisionPage() {
                 {...register("contractorName")}
               />
             </FormField>
+            
+            <FormField name="wantOneredboxContractor" label="">
+              <div className="flex items-start space-x-2 mt-2">
+                <Controller
+                  control={control}
+                  name="wantOneredboxContractor"
+                  render={({ field }) => (
+                    <Checkbox
+                      id="wantOneredboxContractor"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  )}
+                />
+                <div className="grid gap-1.5 leading-none">
+                  <Label
+                    htmlFor="wantOneredboxContractor"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    I want OneredBox to be the contractor
+                  </Label>
+                  <p className="text-sm text-muted-foreground">
+                    Check this if you want us to handle the construction, not just supervise.
+                  </p>
+                </div>
+              </div>
+            </FormField>
+
             <div className="grid lg:grid-cols-2 gap-4">
               <FormField label="Select Meeting Date" name="date" required>
                 <FormInput type="date" {...register("date")} />
@@ -591,9 +622,13 @@ export default function ConstructionSupervisionPage() {
           </div>
         ),
       },
-    ],
-    [register, control, errors],
-  );
+    ];
+
+    // Filter out the supervision requirements step when OneredBox is the contractor
+    return wantOneredbox
+      ? allSteps.filter((step) => step.id !== "supervision-requirements")
+      : allSteps;
+  }, [register, control, errors, wantOneredbox]);
 
   const handleSubmit = async (data: FormData) => {
     if (!isVerified) {

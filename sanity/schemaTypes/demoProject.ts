@@ -72,7 +72,7 @@ export const demoProject = defineType({
     }),
     defineField({
       name: "location",
-      title: "Location",
+      title: "Loation",
       type: "object",
       fields: [
         defineField({ name: "address", type: "string", title: "Address" }),

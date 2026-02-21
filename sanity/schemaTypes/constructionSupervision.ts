@@ -48,6 +48,11 @@ export const constructionSupervision = defineType({
       type: "string",
     }),
     defineField({
+      name: "wantOneredboxContractor",
+      title: "Wants Oneredbox Contractor",
+      type: "boolean",
+    }),
+    defineField({
       name: "date",
       title: "Consultation Date",
       type: "date",

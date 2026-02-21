@@ -472,9 +472,11 @@ export default async function ProjectDetailPage({
                         {project.projectManager.email}
                       </span>
                     </a>
-                    <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
-                      <MessageCircle className="h-4 w-4 mr-2" />
-                      WhatsApp
+                    <Button asChild className="w-full bg-green-600 hover:bg-green-700 text-white">
+                      <a href={`https://wa.me/${project.projectManager.phone.replace(/[^0-9]/g, "")}`} target="_blank" rel="noopener noreferrer">
+                        <MessageCircle className="h-4 w-4 mr-2" />
+                        WhatsApp
+                      </a>
                     </Button>
                   </div>
                 </CardContent>
