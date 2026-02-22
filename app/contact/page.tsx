@@ -41,6 +41,8 @@ export default function ContactPage() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
+  console.log("recaptchaToken", process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY);
+
   const {
     register,
     handleSubmit,
