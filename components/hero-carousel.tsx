@@ -47,7 +47,7 @@ export function HeroCarousel() {
         );
         return data;
       } catch (error) {
-        console.error("An Error Occured while fetching hero testimonials");
+        // console.error("An Error Occured while fetching hero testimonials");
         return Promise.reject(new Error("Hero Testimonial Error"));
       }
     },

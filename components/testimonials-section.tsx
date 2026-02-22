@@ -90,7 +90,7 @@ export function TestimonialsCarousel() {
             onClick={() =>refetch()} 
             className="px-6 py-2 bg-primary-foreground/10 hover:bg-primary-foreground/20 text-primary-foreground rounded-full transition-colors border border-primary-foreground/20"
           >
-            Refresh Page
+            Try Again
           </button>
         </div>
       </div>
@@ -110,7 +110,7 @@ export function TestimonialsCarousel() {
           prevEl: ".section-testimonials-prev",
         }}
       >
-        {data.map((testimonial: Record<string, any>) => (
+        {data && data.map((testimonial: Record<string, any>) => (
           <SwiperSlide>
             <div key={testimonial.id} className="max-w-4xl mx-auto">
               <div className="relative bg-primary-foreground/5 backdrop-blur-sm rounded-2xl p-8 lg:p-12 border border-primary-foreground/10">
@@ -151,7 +151,7 @@ export function TestimonialsCarousel() {
 
         <div className="flex items-center justify-between mt-6">
           <div className="flex items-center gap-1.5">
-            {data.map((_: any, index: number) => (
+            {data&& data.map((_: any, index: number) => (
               <span
                 key={index}
                 className={cn(
