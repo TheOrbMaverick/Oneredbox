@@ -12,6 +12,7 @@
 
 dist/
 /dist/
+1redbox/
 
 # debug
 npm-debug.log*
