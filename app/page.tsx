@@ -1,4 +1,3 @@
-import { Header } from "@/components/header";
 import { HeroCarousel } from "@/components/hero-carousel";
 import { AboutSection } from "@/components/about-section";
 import { ServicesSection } from "@/components/services-section";
@@ -6,8 +5,6 @@ import { GallerySection } from "@/components/gallery-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
 import { FaqSection } from "@/components/faq-section";
 import { Footer } from "@/components/footer";
-import { USRegistrationNumber, NGRegistrationNumber } from "@/constants/info";
-import Image from "next/image";
 
 export default async function HomePage() {
   return (
