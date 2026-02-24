@@ -286,7 +286,7 @@ export default function ContactPage() {
                       <ReCAPTCHA
                         ref={recaptchaRef}
                         sitekey={
-                          "6LePk3YsAAAAAOPA30TvNALTkVhuKclQQvRaNQ0V"
+                          "6LcZq3YsAAAAALSBmpjaS1E8WPhmeWE7z3tTa7gy"
                         }
                         onChange={handleRecaptchaChange}
                         onExpired={() => {
