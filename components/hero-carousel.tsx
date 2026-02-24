@@ -228,7 +228,7 @@ export function HeroCarousel() {
                 </div>
 
                 {/*  */}
-                <div className="absolute bottom-20_ lg:bottom-10_ top-1/2 -translate-y-1/2 left-4 right-4 lg:left-10 z-2 ">
+                <div className="absolute bottom-20_ lg:bottom-10_ top-1/2 -translate-y-[30%] left-4 right-4 lg:left-10 z-2 ">
                   <div key={index} className="h-auto! items-end flex!">
                     <div className="lg:max-w-3xl self-end">
                       {/* Project Tag */}
@@ -273,7 +273,7 @@ export function HeroCarousel() {
             ))}
         </Swiper>
 
-        <div className="absolute left-4 bottom-18 smbottom-24 sm:bottom-[15%] sm:left-18 z-10">
+        <div className="absolute left-4 bottom-18 smbottom-24 sm:bottom-24 sm:left-18 z-10">
           <div className="flex gap-3 flex-col sm:flex-row">
             <Link href={"/book-service"}>
               <Button
