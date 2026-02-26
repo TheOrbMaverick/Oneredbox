@@ -14,10 +14,10 @@ import {
 } from "lucide-react";
 
 export const footerDescription =
-  "Building excellence since 1985. We transform visions into reality with precision, quality, and unwavering commitment to our clients.";
+  "Building excellence since 2019. We transform visions into reality with precision, quality, and unwavering commitment to our clients.";
 
 export const aboutUs = {
-  header: "Building Excellence Since 1985",
+  header: "Building Excellence Since 2019",
   description:
     "For over four decades, Oneredbox Construction has been at the forefront of the construction industry, delivering exceptional projects that stand the test of time. Our commitment to quality, innovation, and client satisfaction has made us the trusted partner for residential, commercial, and industrial construction needs.",
 };
