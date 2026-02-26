@@ -82,6 +82,8 @@ export function HeroCarousel() {
           </Button>
         </div>
         <Swiper
+        onMouseDown={()=>swiperRef.current?.swiper.autoplay.pause()}
+        onMouseUp={()=>swiperRef.current?.swiper.autoplay.resume()}
           ref={swiperRef}
           onSlideChange={(swiper) => {
             // Pause and reset all videos
@@ -110,8 +112,8 @@ export function HeroCarousel() {
           }}
           autoplay={{
             delay: 5000,
-            disableOnInteraction: true,
-            pauseOnMouseEnter: true,
+            // disableOnInteraction: true,
+            // pauseOnMouseEnter: true,
 
           }}
         >
@@ -155,7 +157,7 @@ export function HeroCarousel() {
                   </div>
 
                   {/* Quote */}
-                  <div className="relative mb-8">
+                  <div className="relative mb8">
                     <Quote className="absolute -top-4 left-4 h-12 w-12 text-red-500/30" />
                     <p className="text-4xl sm:text-6xl   font-bold text-primary-foreground leading-tight lg:pl-8">
                       Build Your Dream Property in Nigeria—From Anywhere in the
