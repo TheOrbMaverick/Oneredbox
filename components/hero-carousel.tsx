@@ -82,8 +82,8 @@ export function HeroCarousel() {
           </Button>
         </div>
         <Swiper
-        onMouseDown={()=>swiperRef.current?.swiper.autoplay.pause()}
-        onMouseUp={()=>swiperRef.current?.swiper.autoplay.resume()}
+        onTouchStart={() => swiperRef.current?.swiper.autoplay.pause()}
+        onTouchEnd={() => swiperRef.current?.swiper.autoplay.resume()}
           ref={swiperRef}
           onSlideChange={(swiper) => {
             // Pause and reset all videos
@@ -291,7 +291,7 @@ export function HeroCarousel() {
               <Button
                 size="lg"
                 variant="outline"
-                className="text-white  hover:text-white hover:bg-red-500/30 bg-white/5 border-red-500 font-semibold cursor-pointer"
+                className="text-white  hover:text-white hover:bg-red-500/30 bg-white/5 backdrop-blur-xs border-2 rounded-lg border-red-500 font-semibold cursor-pointer"
               >
                 View Demo Dashboard
               </Button>
