@@ -147,7 +147,7 @@ export function HeroCarousel() {
               <div className="absolute h-dvh w-full bg-linear-to-r from-primary/50 via-primary/40 to-primary/50" />
             </div>
 
-            <div className="absolute bottom-44 flex items-end -translate-y1/2 left-4 right-4 lg:left-10 z-2 ">
+            <div className="absolute bottom-44 flex items-end left-4 right-4 lg:left-10 z-2 ">
               <div className="">
                 <div className="lg:max-w-3xl">
                   {/* Project Tag */}
@@ -230,7 +230,7 @@ export function HeroCarousel() {
                 </div>
 
                 {/*  */}
-                <div className="absolute bottom-20_ lg:bottom-10_ top-1/2 -translate-y-1/4 left-4 right-4 lg:left-10 z-2 ">
+                <div className="absolute bottom-44 flex items-end left-4 right-4 lg:left-10 z-2 ">
                   <div key={index} className="h-auto! items-end flex!">
                     <div className="lg:max-w-3xl self-end">
                       {/* Project Tag */}
@@ -248,7 +248,7 @@ export function HeroCarousel() {
                       </div>
 
                       {/* Author */}
-                      <div className="flex items-center gap-4 lg:pl-8 mb-12">
+                      <div className="flex items-center gap-4 lg:pl-8">
                         <div className="w-12 h-12 overflow-hidden relative bgaccent flex items-center justify-center text-accent-foreground font-bold text-lg">
                           {/* {currentTestimonial.name.charAt(0)} */}
                           <Image
