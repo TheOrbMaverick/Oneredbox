@@ -47,7 +47,7 @@ export default async function ProjectDetailPage({
   const { id } = await params;
 
   const project = await client.fetch(
-    `*[_type=="clientProject" && _id == "${id}"][0]{...,"clientRef":clientRef->{clientName},"projectManager":projectManager->,"cameraFeedLink":cameraFeedLink,"media":media | order(data desc)[]{...,"image":image.asset->,"thumbnail":thumbnail.asset->,"video":video.asset->}}`,
+    `*[_type=="clientProject" && _id == "${id}"][0]{...,"clientRef":clientRef->{clientName},"projectManager":projectManager->,"cameraFeedLink":cameraFeedLink,"media":media | order(date desc)[]{...,"image":image.asset->,"thumbnail":thumbnail.asset->,"video":video.asset->}}`,
     { id },
   );
 
