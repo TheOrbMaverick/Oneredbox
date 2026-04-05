@@ -147,9 +147,9 @@ export function HeroCarousel() {
               <div className="absolute h-dvh w-full bg-linear-to-r from-primary/50 via-primary/40 to-primary/50" />
             </div>
 
-            <div className="absolute bottom-20_ lg:bottom-10_ top-1/2 -translate-y-1/4 left-4 right-4 lg:left-10 z-2 ">
-              <div className="h-auto! items-end flex!">
-                <div className="lg:max-w-3xl self-end">
+            <div className="absolute bottom-44 flex items-end -translate-y1/2 left-4 right-4 lg:left-10 z-2 ">
+              <div className="">
+                <div className="lg:max-w-3xl">
                   {/* Project Tag */}
                   <div className="inline-flex items-center gap-2 bg-red-500/10 text-red-500 px-4 py-2 rounded-full text-sm font-medium mb-6 backdrop-blur-sm">
                     <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
@@ -158,15 +158,15 @@ export function HeroCarousel() {
 
                   {/* Quote */}
                   <div className="relative mb8">
-                    <Quote className="absolute -top-4 left-4 h-12 w-12 text-red-500/30" />
-                    <p className="text-4xl sm:text-6xl   font-bold text-primary-foreground leading-tight lg:pl-8">
+                    <Quote className="absolute -top-4 left-0 h-12 w-12 text-red-500/30 z-1" />
+                    <p className="text-4xl sm:text-6xl   font-bold text-primary-foreground leading-tight lg:pl-8 z-2 relative">
                       Build Your Dream Property in Nigeria—From Anywhere in the
                       World
                     </p>
                   </div>
 
                   {/* Author */}
-                  <div className="flex items-center gap-4 lg:pl-8 mb-12">
+                  <div className="flex items-center gap-4 lg:pl-8">
                     <div className="w-12 h-12 overflow-hidden relative flex items-center justify-center text-accent-foreground font-bold text-lg">
                       <Image
                         src={`https://flagcdn.com/ng.svg`}
