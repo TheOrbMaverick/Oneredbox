@@ -9,13 +9,11 @@ import {
   Expand,
   Camera,
   Video,
-  Play,
-  VideoIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { ProjectMedia } from "@/lib/client-projects-data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { BsFillCameraReelsFill } from "react-icons/bs";
 import { FaCamera } from "react-icons/fa";
