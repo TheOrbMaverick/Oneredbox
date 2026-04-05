@@ -147,7 +147,7 @@ export function HeroCarousel() {
               <div className="absolute h-dvh w-full bg-linear-to-r from-primary/50 via-primary/40 to-primary/50" />
             </div>
 
-            <div className="absolute bottom-44 flex items-end left-4 right-4 lg:left-10 z-2 ">
+            <div className="absolute bottom-44 md:bottom-auto md:top-1/2 md:-translate-y-1/2 flex items-end left-4 right-4 lg:left-10 z-2 ">
               <div className="">
                 <div className="lg:max-w-3xl">
                   {/* Project Tag */}
@@ -230,7 +230,7 @@ export function HeroCarousel() {
                 </div>
 
                 {/*  */}
-                <div className="absolute bottom-44 flex items-end left-4 right-4 lg:left-10 z-2 ">
+                <div className="absolute bottom-44 md:bottom-auto md:top-1/2 md:-translate-y-1/2 flex items-end left-4 right-4 lg:left-10 z-2 ">
                   <div key={index} className="h-auto! items-end flex!">
                     <div className="lg:max-w-3xl self-end">
                       {/* Project Tag */}
