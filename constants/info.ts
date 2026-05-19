@@ -3,7 +3,7 @@ export const NGPhone = "+234 701 663 9821";
 
 export const address = "24 I.T. Igbani Street, Jabi.";
 
-export const email = "info@oneredbox.com";
+export const email = "ita@1redbox.com";
 
 export const USRegistrationNumber = "23869671";
 export const NGRegistrationNumber = "RC 1637864";

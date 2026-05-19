@@ -97,13 +97,13 @@ export function FaqSection() {
                 <p className="font-semibold">Reach Out:</p>
                 <div className="mt-2 flex flex-col gap-3">
                   <Link
-                    href="mailto:info@oneredbox.com"
+                    href="mailto:ita@1redbox.com"
                     className="flex gap-2 text-lg items-center "
                   >
                     <Mail className=" size-5 mt-1" />
                     <span>{email}</span>
                   </Link>
-<Separator className="" />
+                  <Separator className="" />
                   <div className="flex items-center gap-2 md:textlg">
                     <Phone className="size-5" />
                     <div className="flex flexcol gap-3">
@@ -112,7 +112,7 @@ export function FaqSection() {
                     </div>
                   </div>
 
-<Separator/>
+                  <Separator />
                   <div className="flex items-center gap-3 ">
                     <Building2 className="size-5" />
                     <div className="flex gap-4">

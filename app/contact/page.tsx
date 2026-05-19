@@ -120,7 +120,7 @@ export default function ContactPage() {
           email: data.email,
           message: data.message,
         },
-        publicKey
+        publicKey,
       );
 
       setSubmitSuccess(true);
@@ -175,7 +175,10 @@ export default function ContactPage() {
                     Reach Out to Us
                   </p>
                   <p className="font-medium">
-                    We're here to help bring your vision to life. Whether you need land acquisition, building design, or construction supervision, our team is ready to assist you every step of the way.
+                    We're here to help bring your vision to life. Whether you
+                    need land acquisition, building design, or construction
+                    supervision, our team is ready to assist you every step of
+                    the way.
                   </p>
                 </div>
               </div>
@@ -186,7 +189,7 @@ export default function ContactPage() {
                   </div>
                   <div className="">
                     <p className="font-medium">Email Address</p>
-                    <p className="text-md font-semibold">info@oneredbox.com</p>
+                    <p className="text-md font-semibold">ita@1redbox.com</p>
                   </div>
                 </div>
 
@@ -228,7 +231,10 @@ export default function ContactPage() {
                     </p>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit(onSubmit)} className="flex flex-1 flex-col gap-6">
+                  <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="flex flex-1 flex-col gap-6"
+                  >
                     <div className="flex flex-col md:flex-row gap-6 ">
                       <div className="grid w-full max-wsm items-center gap-3">
                         <Label htmlFor="name">Name *</Label>
@@ -286,8 +292,7 @@ export default function ContactPage() {
                       <ReCAPTCHA
                         ref={recaptchaRef}
                         sitekey={
-                          process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ||
-                          ""
+                          process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""
                         }
                         onChange={handleRecaptchaChange}
                         onExpired={() => {
