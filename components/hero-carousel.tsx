@@ -82,6 +82,8 @@ export function HeroCarousel() {
           </Button>
         </div>
         <Swiper
+        onTouchStart={() => swiperRef.current?.swiper.autoplay.pause()}
+        onTouchEnd={() => swiperRef.current?.swiper.autoplay.resume()}
           ref={swiperRef}
           onSlideChange={(swiper) => {
             // Pause and reset all videos
@@ -110,8 +112,8 @@ export function HeroCarousel() {
           }}
           autoplay={{
             delay: 5000,
-            disableOnInteraction: true,
-            pauseOnMouseEnter: true,
+            // disableOnInteraction: true,
+            // pauseOnMouseEnter: true,
 
           }}
         >
@@ -145,9 +147,9 @@ export function HeroCarousel() {
               <div className="absolute h-dvh w-full bg-linear-to-r from-primary/50 via-primary/40 to-primary/50" />
             </div>
 
-            <div className="absolute bottom-20_ lg:bottom-10_ top-1/2 -translate-y-1/4 left-4 right-4 lg:left-10 z-2 ">
-              <div className="h-auto! items-end flex!">
-                <div className="lg:max-w-3xl self-end">
+            <div className="absolute bottom-44 md:bottom-auto md:top-1/2 md:-translate-y-1/2 flex items-end left-4 right-4 lg:left-10 z-2 ">
+              <div className="">
+                <div className="lg:max-w-3xl">
                   {/* Project Tag */}
                   <div className="inline-flex items-center gap-2 bg-red-500/10 text-red-500 px-4 py-2 rounded-full text-sm font-medium mb-6 backdrop-blur-sm">
                     <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
@@ -155,16 +157,16 @@ export function HeroCarousel() {
                   </div>
 
                   {/* Quote */}
-                  <div className="relative mb-8">
-                    <Quote className="absolute -top-4 left-4 h-12 w-12 text-red-500/30" />
-                    <p className="text-4xl sm:text-6xl   font-bold text-primary-foreground leading-tight lg:pl-8">
+                  <div className="relative mb8">
+                    <Quote className="absolute -top-4 left-0 h-12 w-12 text-red-500/30 z-1" />
+                    <p className="text-4xl sm:text-6xl   font-bold text-primary-foreground leading-tight lg:pl-8 z-2 relative">
                       Build Your Dream Property in Nigeria—From Anywhere in the
                       World
                     </p>
                   </div>
 
                   {/* Author */}
-                  <div className="flex items-center gap-4 lg:pl-8 mb-12">
+                  <div className="flex items-center gap-4 lg:pl-8">
                     <div className="w-12 h-12 overflow-hidden relative flex items-center justify-center text-accent-foreground font-bold text-lg">
                       <Image
                         src={`https://flagcdn.com/ng.svg`}
@@ -228,7 +230,7 @@ export function HeroCarousel() {
                 </div>
 
                 {/*  */}
-                <div className="absolute bottom-20_ lg:bottom-10_ top-1/2 -translate-y-1/4 left-4 right-4 lg:left-10 z-2 ">
+                <div className="absolute bottom-44 md:bottom-auto md:top-1/2 md:-translate-y-1/2 flex items-end left-4 right-4 lg:left-10 z-2 ">
                   <div key={index} className="h-auto! items-end flex!">
                     <div className="lg:max-w-3xl self-end">
                       {/* Project Tag */}
@@ -246,7 +248,7 @@ export function HeroCarousel() {
                       </div>
 
                       {/* Author */}
-                      <div className="flex items-center gap-4 lg:pl-8 mb-12">
+                      <div className="flex items-center gap-4 lg:pl-8">
                         <div className="w-12 h-12 overflow-hidden relative bgaccent flex items-center justify-center text-accent-foreground font-bold text-lg">
                           {/* {currentTestimonial.name.charAt(0)} */}
                           <Image
@@ -289,7 +291,7 @@ export function HeroCarousel() {
               <Button
                 size="lg"
                 variant="outline"
-                className="text-white  hover:text-white hover:bg-red-500/30 bg-white/5 border-red-500 font-semibold cursor-pointer"
+                className="text-white  hover:text-white hover:bg-red-500/30 bg-white/5 backdrop-blur-xs border-2 rounded-lg border-red-500 font-semibold cursor-pointer"
               >
                 View Demo Dashboard
               </Button>
